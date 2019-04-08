@@ -7,14 +7,18 @@ m1 = 2;           % masse du pendule 1
 m2 = 3;           % masse du pendule 2
 l1 = 3;           % longueur du pendule 1
 l2 = 2;           % longueur du pendule 2
-theta10 = 0;      % angle formé par le pendule 1 avec la verticale
-theta20 = 0       % angle formé par le pendule 2 avec la verticale
-theta10p = 0;     % vitesse angulaire initiale du pendule 1
-theta20p = 0;     % vitesse angulaire initiale du pendule 2
+theta10 = 0.5;      % angle formé par le pendule 1 avec la verticale
+theta20 = 0.7 ;       % angle formé par le pendule 2 avec la verticale
+theta10p= 0.1;         %vitesse angulaire initiale du pendule 1
+theta20p= 0.3;         % vitesse angulaire initiale du pendule 1
+theta10pp = 0;     % accélération angulaire initiale du pendule 1
+theta20pp = 0;     % accélération angulaire initiale du pendule 2
 mu = m2/m1;       % rapport des masses : utile pour simplifier l'équation
 
-Niter= ?    ; % Nombre d'itérations
-tau= ?      ; % Intervalle de temps
+Niter= 100; % Nombre d'itérations
+dt = 0.01; % Intervalle de temps
+tf = Niter * dt; %Temps de modélisation 
+t = [0:dt:tf] ; %Matrice temps
 
 %% Constantes simplificatrices
 
@@ -24,24 +28,62 @@ A1 = (1+mu)/mu-l1*w1^2/(mu*g);
 A2 = (1+mu)/mu-l1*w2^2/(mu*g);
 C1 = (theta20-A2*theta10)/(A1-A2);
 C2 = (A1*theta10-theta20)/(A1-A2);
-phi1 = asin((theta20p-A2*theta10p)/(C1*w1*(A2-A1));
-phi2 = asin((A1*theta10p-theta20p)/(C2*w2*(A2-A1)); 
+phi1 = asin((theta20p-A2*theta10p)/(C1*w1*(A2-A1)));
+phi2 = asin((A1*theta10p-theta20p)/(C2*w2*(A2-A1))); 
 
 %% Déclaration et initialisation des matrices
 
-X=zeros(Niter+1,1); %Matrice position n°1
-Y=zeros(Niter+1,1); %Matrice position n°2
-theta=zeros(Niter+1,4); %Matrice angle et vitesses de rotation
+P1=zeros(Niter+1,2); %Matrice position du premier pendule
+P2=zeros(Niter+1,2); %Matrice position du deuxième pendule
+theta=zeros(Niter+1,6); %Matrice angle et vitesses de rotation
 
-theta10 = ;
-theta10p = ;
-theta20 = ;
-theta20p = ;
-theta0 = [theta10 ,theta10p,theta20,theta20p];
+
+theta0 = [theta10 , theta10p , theta10pp,theta20, theta20p, theta20pp];
 theta(1,:) = theta0;
-theta1=theta(:,1) % theta1
-theta1p=theta(:,2) % theta point 1
-theta2=theta(:,3) % theta 2
-theta2p=theta(:,4) % theta point 2 
+
+P1(1,1) = l1*cos(theta10); 
+P1(1,2) = l1*sin(theta10);
+P2(1,1) = l2*cos(theta20)+P1(1,1); 
+P2(1,2) = l2*sin(theta20)+P1(1,2);
+
+%% Boucle Euler explicite 
+
+for i=1:Niter
+    P1(i,1)=l1*cos(theta(i,1));
+    P1(i,2)=l1*sin(theta(i,1));
+    P2(i,1)=l2*cos(theta(i,4))+P1(i,1);
+    P2(i,2)=l2*sin(theta(i,4))+P1(i,2);
+  
+    theta(i+1,1) = theta(i,1) + dt * theta(i,2);
+    theta(i+1,4) = theta(i,4) + dt * theta(i,5);
+    theta(i+1,2) = theta(i,2) + dt * theta(i,3);
+    theta(i+1,5) = theta(i,5) + dt * theta(i,6);
+    theta(i+1,3) = (mu*g*theta(i,4))-((1+mu)*g*theta(i,1))/l1;
+    theta(i+1,6) = ((1+mu)*g*theta(i,1)-(1+mu)*g*theta(i,4))/l2;
+    
+    
+end
+
+%% Affichage graphique
 
 
+figure(1);
+axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 0]); %// freeze axes
+title('Double pendule')
+pendule_masse1=plot(P1(1,1),-P1(1,2),'k.','MarkerSize',40,'Color','red');
+hold on
+pendule_tige1=plot([0,P1(1,1)],[0,-P1(1,2)],'LineWidth',1);
+hold on
+pendule_masse2=plot(P2(1,1)+P1(1,1),-P2(1,2)-P1(1,2),'k.','MarkerSize',40,'Color','red');
+hold on
+pendule_tige2=plot([P1(1,1),P2(1,1)+P1(1,1)],[-P1(1,2),-P2(1,2)-P1(1,2)],'LineWidth',1);
+hold on
+%
+for j = 1:Niter
+    set(pendule_masse1,'XData',P1(j,1),'YData',-P1(j,2));
+    set(pendule_tige1,'XData',[0,P1(j,1)],'YData',[0,-P1(j,2)]);
+    set(pendule_masse2,'XData',P2(j,1),'YData',-P2(j,2));
+    set(pendule_tige2,'XData',[0,P2(j,1)],'YData',[0,-P2(j,2)]);
+    axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 0]); %// freeze axes
+    pause(0.005)
+end
