@@ -7,18 +7,18 @@ m1 = 2;           % masse du pendule 1
 m2 = 3;           % masse du pendule 2
 l1 = 3;           % longueur du pendule 1
 l2 = 2;           % longueur du pendule 2
-theta10 = 0.5;      % angle formé par le pendule 1 avec la verticale
-theta20 = 0.7 ;       % angle formé par le pendule 2 avec la verticale
+theta10 = 0.01;      % angle formé par le pendule 1 avec la verticale
+theta20 = 0.01;       % angle formé par le pendule 2 avec la verticale
 theta10p= 0.1;         %vitesse angulaire initiale du pendule 1
-theta20p= 0.3;         % vitesse angulaire initiale du pendule 1
+theta20p= 0.2;         % vitesse angulaire initiale du pendule 1
 theta10pp = 0;     % accélération angulaire initiale du pendule 1
 theta20pp = 0;     % accélération angulaire initiale du pendule 2
 mu = m2/m1;       % rapport des masses : utile pour simplifier l'équation
 
-Niter= 100; % Nombre d'itérations
+Niter= 10000; % Nombre d'itérations
 dt = 0.01; % Intervalle de temps
-tf = Niter * dt; %Temps de modélisation 
-t = [0:dt:tf] ; %Matrice temps
+% tf = Niter * dt; %Temps de modélisation 
+% t = [0:dt:tf] ; %Matrice temps
 
 %% Constantes simplificatrices
 
@@ -41,28 +41,31 @@ theta=zeros(Niter+1,6); %Matrice angle et vitesses de rotation
 theta0 = [theta10 , theta10p , theta10pp,theta20, theta20p, theta20pp];
 theta(1,:) = theta0;
 
-P1(1,1) = l1*cos(theta10); 
-P1(1,2) = l1*sin(theta10);
-P2(1,1) = l2*cos(theta20)+P1(1,1); 
-P2(1,2) = l2*sin(theta20)+P1(1,2);
+P1(1,1) = l1*sin(theta10); 
+P1(1,2) = l1*cos(theta10);
+P2(1,1) = l2*sin(theta20)+P1(1,1); 
+P2(1,2) = l2*cos(theta20)+P1(1,2);
 
 %% Boucle Euler explicite 
 
 for i=1:Niter
-    P1(i,1)=l1*cos(theta(i,1));
-    P1(i,2)=l1*sin(theta(i,1));
-    P2(i,1)=l2*cos(theta(i,4))+P1(i,1);
-    P2(i,2)=l2*sin(theta(i,4))+P1(i,2);
+   
   
-    theta(i+1,1) = theta(i,1) + dt * theta(i,2);
-    theta(i+1,4) = theta(i,4) + dt * theta(i,5);
-    theta(i+1,2) = theta(i,2) + dt * theta(i,3);
-    theta(i+1,5) = theta(i,5) + dt * theta(i,6);
-    theta(i+1,3) = (mu*g*theta(i,4))-((1+mu)*g*theta(i,1))/l1;
-    theta(i+1,6) = ((1+mu)*g*theta(i,1)-(1+mu)*g*theta(i,4))/l2;
+    theta(i+1,1) = theta(i,1) + dt * theta(i,2);  % theta pendule 1
+    theta(i+1,4) = theta(i,4) + dt * theta(i,5);  % theta pendule 2
+    theta(i+1,2) = theta(i,2) + dt * theta(i,3);  % thetap pendule 1
+    theta(i+1,5) = theta(i,5) + dt * theta(i,6);  % thetap pendule 2
+    
+    theta(i+1,3) = ((mu*g*theta(i,4))-((1+mu)*g*theta(i,1)))/l1;     % thetapp pendule 1
+    theta(i+1,6) = ((1+mu)*g*theta(i,1)-(1+mu)*g*theta(i,4))/l2;   % thetapp pendule 2
     
     
 end
+ P1(:,1)=l1*sin(theta(:,1));
+ P1(:,2)=l1*cos(theta(:,1));
+    
+ P2(:,1)=l2*sin(theta(:,4))+P1(:,1);
+ P2(:,2)=l2*cos(theta(:,4))+P1(:,2);
 
 %% Affichage graphique
 
@@ -87,5 +90,3 @@ for j = 1:Niter
     axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
     pause(0.005)
 end
-
-
