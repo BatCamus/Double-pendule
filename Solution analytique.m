@@ -68,22 +68,24 @@ end
 
 
 figure(1);
-axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 0]); %// freeze axes
+axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
 title('Double pendule')
 pendule_masse1=plot(P1(1,1),-P1(1,2),'k.','MarkerSize',40,'Color','red');
 hold on
 pendule_tige1=plot([0,P1(1,1)],[0,-P1(1,2)],'LineWidth',1);
 hold on
-pendule_masse2=plot(P2(1,1)+P1(1,1),-P2(1,2)-P1(1,2),'k.','MarkerSize',40,'Color','red');
+pendule_masse2=plot(P2(1,1),-P2(1,2),'k.','MarkerSize',40,'Color','red');
 hold on
-pendule_tige2=plot([P1(1,1),P2(1,1)+P1(1,1)],[-P1(1,2),-P2(1,2)-P1(1,2)],'LineWidth',1);
+pendule_tige2=plot([P1(1,1),P2(1,1)],[-P1(1,2),-P2(1,2)],'LineWidth',1);
 hold on
-%
+
 for j = 1:Niter
     set(pendule_masse1,'XData',P1(j,1),'YData',-P1(j,2));
     set(pendule_tige1,'XData',[0,P1(j,1)],'YData',[0,-P1(j,2)]);
     set(pendule_masse2,'XData',P2(j,1),'YData',-P2(j,2));
-    set(pendule_tige2,'XData',[0,P2(j,1)],'YData',[0,-P2(j,2)]);
-    axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 0]); %// freeze axes
+    set(pendule_tige2,'XData',[P1(j,1),P2(j,1)],'YData',[-P1(j,2),-P2(j,2)]);
+    axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
     pause(0.005)
 end
+
+
