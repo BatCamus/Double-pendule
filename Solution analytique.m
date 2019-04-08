@@ -1,16 +1,17 @@
 %% Solution analytique
 %%%%%%%%%%%%%%%%%%%%%%
 
-%% Constantes
-
-g = 9.81;
-
-m1=2; %masse pendule 1
-m2=3; % masse pendule 2
-mu = m1/m2;
-
-l1 = 3; %longueur pendule 1
-l2 = 2; %longueur pendule 2
+%% Déclaration des variables et initalisation des constantes 
+g = 9.81;         % gravité terrestre
+m1 = 2;           % masse du pendule 1
+m2 = 3;           % masse du pendule 2
+l1 = 3;           % longueur du pendule 1
+l2 = 2;           % longueur du pendule 2
+theta10 = 0;      % angle formé par le pendule 1 avec la verticale
+theta20 = 0       % angle formé par le pendule 2 avec la verticale
+theta10p = 0;     % vitesse angulaire initiale du pendule 1
+theta20p = 0;     % vitesse angulaire initiale du pendule 2
+mu = m2/m1;       % rapport des masses : utile pour simplifier l'équation
 
 Niter= ?    ; % Nombre d'itérations
 tau= ?      ; % Intervalle de temps
