@@ -1,7 +1,8 @@
 %% Linéaire
 %%%%%%%%%%%%%%%%%%%%%%
 
-
+clc
+close all
 clear all
 %% Déclaration des variables et initalisation des constantes 
 g = 9.81;         % gravité terrestre
@@ -9,8 +10,8 @@ m1 = 2;           % masse du pendule 1
 m2 = 5;           % masse du pendule 2
 l1 = 3;           % longueur du pendule 1
 l2 = 2;           % longueur du pendule 2
-theta10 = 0.01;      % angle formé par le pendule 1 avec la verticale
-theta20 = 0.01;       % angle formé par le pendule 2 avec la verticale
+theta10 = 0.02;      % angle formé par le pendule 1 avec la verticale
+theta20 = 0.02;       % angle formé par le pendule 2 avec la verticale
 theta10p= 0.1;         %vitesse angulaire initiale du pendule 1
 theta20p= 0.2;         % vitesse angulaire initiale du pendule 1
 mu = m2/m1;       % rapport des masses : utile pour simplifier l'équation
@@ -19,6 +20,7 @@ Niter= 1000; % Nombre d'itérations
 dt = 0.01; % Intervalle de temps
 % tf = Niter * dt; %Temps de modélisation 
 % t = [0:dt:tf] ; %Matrice temps
+
 
 %% Constantes simplificatrices
 
@@ -93,35 +95,50 @@ end
  P2(:,1)=l2*sin(theta(:,4))+P1(:,1);
  P2(:,2)=l2*cos(theta(:,4))+P1(:,2);
 
+%% Energies
+
+       %Energies cinétiques
+       
+       Ec1=0.5*m1*(l1^2)*(theta(:,2).^2); %Energie cinétique pendule 1
+       Ec2=0.5*m2*((l1^2)*(theta(:,2).^2)+(l2^2)*(theta(:,5).^2)+(2*l1*l2).*(cos(theta(:,1)-theta(:,4)).*theta(:,2).*theta(:,5))); %Energie cinétique pendule 2
+        
+       %Energies potentielles
+       
+       Ep1=(-m1*g*l1).*cos(theta(:,1)); %Energie cinétique pendule 1
+       Ep2=(-m2*g)*(l1.*cos(theta(:,1))+l2.*cos(theta(:,4))); %Energie cinétique pendule 2
+       
+       
+       
+
+
+
+
+
+
+
+
 
 %% Affichage graphique
+tf=dt*Niter;
+max1=max(Ec1); min1=min(Ec1);  %Max et min de l'énergie cinétique sur le pendule 1
+max2=max(Ec2); min2=min(Ec2);  %Max et min de l'énergie cinétique sur le pendule 2
+maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'énergie cinétique totale
 
+max3=max(Ep1); min3=min(Ep1);  %Max et min de l'énergie potentielle sur le pendule 1
+max4=max(Ep2); min4=min(Ep2);  %Max et min de l'énergie potentielle sur le pendule 2
+max34=max(max3,max4); %Max entre Ep1 et Ep2
+maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'énergie potentielle totale
 
-figure(1);
-axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
-title('Double pendule')
-pendule_masse1=plot(P1(1,1),-P1(1,2),'k.','MarkerSize',35,'Color','red');
-hold on
-pendule_tige1=plot([0,P1(1,1)],[0,-P1(1,2)],'LineWidth',2,'Color','black');
-hold on
-pendule_masse2=plot(P2(1,1),-P2(1,2),'k.','MarkerSize',35,'Color','red');
-hold on
-pendule_tige2=plot([P1(1,1),P2(1,1)],[-P1(1,2),-P2(1,2)],'LineWidth',2,'Color','blue');
-hold on
+maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ; 
+    %% détermination de la position initiale
 
-for j = 1:Niter
-    set(pendule_masse1,'XData',P1(j,1),'YData',-P1(j,2));
-    set(pendule_tige1,'XData',[0,P1(j,1)],'YData',[0,-P1(j,2)]);
-    set(pendule_masse2,'XData',P2(j,1),'YData',-P2(j,2));
-    set(pendule_tige2,'XData',[P1(j,1),P2(j,1)],'YData',[-P1(j,2),-P2(j,2)]);
-    
-    
-    plot(P2(j,1),-P2(j,2),'.r','Markersize',0.5);
-    drawnow
-    grid on
+    context_graph=1; % tracé de la position initial
+    Graph_Pendule(context_graph,P1(1,1),P1(1,2),P2(1,1),P2(1,2),l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot);
 
-   
-
-    axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1]); %// freeze axes
-    pause(0.005)
-end
+    %% actualisation position
+    for j = 1:Niter
+        t=dt*j;
+        context_graph=2; % reactualisation du tracé pour afficher la position courante
+        Graph_Pendule(context_graph, P1(j,1),P1(j,2),P2(j,1),P2(j,2),l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot);
+        drawnow;
+    end
