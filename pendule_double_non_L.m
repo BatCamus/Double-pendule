@@ -100,4 +100,49 @@ for j = 1:Niter
     drawnow
 end
 
+%% Section de poincaré
+
+
+n1=size(x(:,1));
+%set the index of poincare points to 1
+np=1;
+%Création matrice ps
+ps=zeros(n1(1),2);
+% Calcul des min et max 
+
+
+%2*x(i,1))>x(i,2)-10^(-4) && 2*x(i,1)<x(i,2)+10^(-4) % autre condition section
+
+
+
+
+
+for i=1:n1(1)
+        % detect the cros-section of the trajectory with the plane y1-y2
+        if(abs(x(i,1))<10^(-2))
+            % store detected cross-section point y1,y2 to ps1,ps2
+            ps(np,1)=x(i,1);
+            ps(np,2)=x(i,2);
+            % increase the index of poincare point
+            np=np+1;
+        end
+end
+
+
+figure(3) 
+plot(x(:,1),x(:,2),'c-','Markersize',2)
+xlabel('theta1')
+ylabel('d(theta1)/dt (rad/s)')
+title('Portrait de phase ne theta1')
+hold on 
+%plot(ps(:,1),ps(:,2),'r+','markersize', 5)
+
+
+for i=1:np-1
+     plot(ps(i,1),ps(i,2),'r+','markersize', 5)
+     % use pause to folow the plot of the poincare section
+     pause(2);
+end
+
+
 
