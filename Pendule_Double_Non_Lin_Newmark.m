@@ -11,7 +11,7 @@ m1 = 2;           % masse du pendule 1
 m2 = 3;           % masse du pendule 2
 l1 = 1;           % longueur du pendule 1
 l2 = 0.9;% longueur du pendule 2
-theta10 =5*pi/180;      % angle formÃ© par le pendule 1 avec la verticale
+theta10 =3*pi/180;      % angle formÃ© par le pendule 1 avec la verticale
 theta20 = 3*pi/180;        % angle formÃ© par le pendule 2 avec la verticale
 theta10p= 0;         %vitesse angulaire initiale du pendule 1
 theta20p= 0;         % vitesse angulaire initiale du pendule 1
@@ -30,7 +30,7 @@ phi1 = asin((theta20p-A2*theta10p)/(C1*w1*(A2-A1)));
 phi2 = asin((A1*theta10p-theta20p)/(C2*w2*(A2-A1)));
 
 Niter= 10000; % Nombre d'itÃ©rations
-dt = 0.001; % Intervalle de temps
+dt = 0.01; % Intervalle de temps
 tf = Niter * dt; %Temps de modÃ©lisation 
 t0=0;
 t =t0:dt:tf ; %Matrice temps
@@ -38,7 +38,7 @@ delta=0.1; %Pas d'intégration de Fnl
 
 M=eye(2); %Constante pour Newmark
 
-NUM=1; % Choix de jacobienne numérique ou analytique 0 pour analytique 1 pour numérique
+NUM=0; % Choix de jacobienne numérique ou analytique 0 pour analytique 1 pour numérique
 
 %% Solution analytique
 aTheta=zeros(Niter+1,2);
