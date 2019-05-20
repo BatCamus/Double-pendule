@@ -1,24 +1,26 @@
-function [dFX dFdX] = calc_dFnl_Double_Pendule(X,dX,t)
+function [dFX, dFdX] = calc_dFnl_Double_Pendule(X,dX)
 
-global m1 m2 l1 l2 g mu
+global m1 m2 l1 l2 g 
 
 dFX=zeros(length(X));           % Dérivée de f par rapport à x
 dFdX=zeros(length(X));          % Dérivée de f par rapport à xpoint
 
 %% Déclaration variables
+c=cos(X(1)-X(2));
+s=sin(X(1)-X(2));
 
     % variables Fnl1
-    A1=m2*l1*cos(X(1)-X(2))*sin(X(1)-X(2))*dX(1)^2;
-    B1=m2*l2*sin(X(1)-X(2))*dX(2)^2;
-    C1=m1*g*sin(X(1));
-    D1=m2*g*cos(X(1)-X(2))*sin(X(2));
-    E1=m1*l1+m2*l1*(sin(X(1)-X(2)))^2;
+A1=m2*l1*c*s*dX(1)^2;
+B1=m2*l2*s*dX(2)^2;
+C1=m1*g*sin(X(1));
+D1=m2*g*c*sin(X(2));
+E1=m1*l1+m2*l1*(s)^2;
     
     % variables Fnl2
-    A2=-(m1+m2)*l1*sin(X(1)-X(2))*dX(1)^2;
-    B2=-m2*l2*cos(X(1)-X(2))*sin(X(1)-X(2))*dX(2)^2;
-    C2=-(m1+m2)*g*sin(X(1)-X(2))*cos(X(1));
-    D2=m1*l2+m2*l2*(sin(X(1)-X(2)))^2;
+A2=-(m1+m2)*l1*s*dX(1)^2;
+B2=-m2*l2*c*s*dX(2)^2;
+C2=-(m1+m2)*g*s*cos(X(1));
+D2=m1*l2+m2*l2*s^2;
     
     % variables de dFnl1/X(1)
 dA11=m2*l1*dX(1)^2*(-sin(X(1)-X(2))^2+cos(X(1)-X(2))^2);

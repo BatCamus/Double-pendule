@@ -3,16 +3,16 @@
 clear all
 close all
 global m1 m2 l1 l2 g mu 
-global C M K
+global M NUM delta
 
 %% Declaration variable
 g = 9.81;         % gravité terrestre
-m1 = 1;           % masse du pendule 1
-m2 = 0.9;           % masse du pendule 2
+m1 = 2;           % masse du pendule 1
+m2 = 3;           % masse du pendule 2
 l1 = 1;           % longueur du pendule 1
-l2 = 0.9;           % longueur du pendule 2
-theta10 =0.8;      % angle formé par le pendule 1 avec la verticale
-theta20 = 0.1;        % angle formé par le pendule 2 avec la verticale
+l2 = 0.9;% longueur du pendule 2
+theta10 =5*pi/180;      % angle formé par le pendule 1 avec la verticale
+theta20 = 3*pi/180;        % angle formé par le pendule 2 avec la verticale
 theta10p= 0;         %vitesse angulaire initiale du pendule 1
 theta20p= 0;         % vitesse angulaire initiale du pendule 1
 theta10pp = 0;     % accélération angulaire initiale du pendule 1
@@ -34,8 +34,11 @@ dt = 0.001; % Intervalle de temps
 tf = Niter * dt; %Temps de modélisation 
 t0=0;
 t =t0:dt:tf ; %Matrice temps
+delta=0.1; %Pas d'int�gration de Fnl
 
 M=eye(2); %Constante pour Newmark
+
+NUM=1; % Choix de jacobienne num�rique ou analytique 0 pour analytique 1 pour num�rique
 
 %% Solution analytique
 aTheta=zeros(Niter+1,2);
