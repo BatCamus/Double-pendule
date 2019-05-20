@@ -1,4 +1,4 @@
-function Graph_Pendule(contexte,P11,P12,P21,P22,l1,l2,t,tf,Ec1,Ec2,Ep1,Ep2,maxt,mint,max34,minp,maxtot,mintot)
+function Graph_Pendule(contexte,P1,P2,l1,l2,t,tf,Ec1,Ec2,Ep1,Ep2,maxt,mint,max34,minp,maxtot,mintot,j)
 
 global pendule_masse1 pendule_tige1 pendule_masse2 pendule_tige2 Energie_cin1 Energie_cin2 Energie_cint Energie_pott Energie_t Energie_pot1 Energie_pot2 pendule_traj
 
@@ -20,26 +20,34 @@ scz=get(0,'screensize'); %Taille écran
 
           if contexte==1 %position initiale
 
-            pendule_masse1=plot(P11,-P12,'k.','MarkerSize',35,'Color','red');
+            pendule_masse1=plot(P1(j,1),-P1(j,2),'k.','MarkerSize',35,'Color','red');
             hold on
-            pendule_tige1=plot([0,P11],[0,-P12],'LineWidth',2,'Color','black');
+            pendule_tige1=plot([0,P1(j,1)],[0,-P1(j,2)],'LineWidth',2,'Color','black');
             hold on
-            pendule_masse2=plot(P21,-P22,'k.','MarkerSize',35,'Color','red');
+            pendule_masse2=plot(P2(j,1),-P2(j,2),'k.','MarkerSize',35,'Color','red');
             hold on
-            pendule_tige2=plot([P11,P21],[-P12,-P22],'LineWidth',2,'Color','blue');
+            pendule_tige2=plot([P1(j,1),P2(j,1)],[-P1(j,2),-P2(j,2)],'LineWidth',2,'Color','blue');
             hold on
-            
+            pendule_traj=plot(P2(j,1),-P2(j,2),'.b','Markersize',5);
+            hold on 
     
-            axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 6]);
+            axis([-6 6 -6 6]);
 
           elseif contexte==2 %position actualisée
 
-            set(pendule_masse1,'XData',P11,'YData',-P12);
-            set(pendule_tige1,'XData',[0,P11],'YData',[0,-P12]);
-            set(pendule_masse2,'XData',P21,'YData',-P22);
-            set(pendule_tige2,'XData',[P11,P21],'YData',[-P12,-P22]);
-            plot(P21,-P22,'.r','Markersize',0.5);
+            set(pendule_masse1,'XData',P1(j,1),'YData',-P1(j,2));
+            set(pendule_tige1,'XData',[0,P1(j,1)],'YData',[0,-P1(j,2)]);
+            set(pendule_masse2,'XData',P2(j,1),'YData',-P2(j,2));
+            set(pendule_tige2,'XData',[P1(j,1),P2(j,1)],'YData',[-P1(j,2),-P2(j,2)]);
             grid on 
+            if j> 200
+            set(pendule_traj,'XData',P2(j-100:j,1),'YData',-P2(j-100:j,2));
+            end
+            if j<200
+             set(pendule_traj,'XData',P2(1:j,1),'YData',-P2(1:j,2));
+            end 
+%     plot(P2(j,1),-P2(j,2),'.b','Markersize',5)
+    drawnow
             
           end 
 %%
@@ -51,7 +59,7 @@ scz=get(0,'screensize'); %Taille écran
      xlabel('t(s)')
      ylabel('Energie(J)')
      title('Evolution des énergies cinétiques en fonction du temps');
-     legend('Energie cinétique pendule 1','Energie cinétique pendule 2','Energie cinétique système');
+     %legend('Energie cinétique pendule 1','Energie cinétique pendule 2','Energie cinétique système');
         
           if contexte==1 %position initiale
             Energie_cin1=plot(t,Ec1,'k.','Markersize',10,'Color','black');
@@ -85,7 +93,7 @@ scz=get(0,'screensize'); %Taille écran
      xlabel('t(s)')
      ylabel('Energie(J)')
      title('Evolution des énergies potentielles en fonction du temps');
-     legend('Energie potentielle pendule 1','Energie potentielle pendule 2','Energie potentielle système');
+  %   legend('Energie potentielle pendule 1','Energie potentielle pendule 2','Energie potentielle système');
      
           if contexte==1 %position initiale
             Energie_pot1=plot(t,Ep1,'k.','Markersize',10,'Color','black');
