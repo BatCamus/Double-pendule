@@ -10,16 +10,16 @@ m1 = 2;           % masse du pendule 1
 m2 = 5;           % masse du pendule 2
 l1 = 3;           % longueur du pendule 1
 l2 = 2;           % longueur du pendule 2
-theta10 = 0.02;      % angle formé par le pendule 1 avec la verticale
-theta20 = 0.02;       % angle formé par le pendule 2 avec la verticale
-theta10p= 0.1;         %vitesse angulaire initiale du pendule 1
-theta20p= 0.2;         % vitesse angulaire initiale du pendule 1
+theta10 =0.9;      % angle formé par le pendule 1 avec la verticale
+theta20 = 0.1;       % angle formé par le pendule 2 avec la verticale
+theta10p= 0;         %vitesse angulaire initiale du pendule 1
+theta20p= 0;         % vitesse angulaire initiale du pendule 1
 mu = m2/m1;       % rapport des masses : utile pour simplifier l'équation
 
-Niter= 1000; % Nombre d'itérations
+Niter= 10000; % Nombre d'itérations
 dt = 0.01; % Intervalle de temps
-% tf = Niter * dt; %Temps de modélisation 
-% t = [0:dt:tf] ; %Matrice temps
+tf = Niter * dt; %Temps de modélisation 
+t = 0:dt:tf ; %Matrice temps
 
 
 %% Constantes simplificatrices
@@ -32,6 +32,17 @@ C1 = (theta20-A2*theta10)/(A1-A2);
 C2 = (A1*theta10-theta20)/(A1-A2);
 phi1 = asin((theta20p-A2*theta10p)/(C1*w1*(A2-A1)));
 phi2 = asin((A1*theta10p-theta20p)/(C2*w2*(A2-A1))); 
+
+
+%% Solution analytique
+ 
+aTheta=zeros(Niter+1,2);
+aTheta(:,1)=C1*cos(w1*t+phi1)+C2*cos(w2*t+phi2);
+aTheta(:,2)=C1*A1*cos(w1*t+phi1)+C2*A2*cos(w2*t+phi2);
+
+
+
+
 
 %% Déclaration et initialisation des matrices
 
@@ -73,27 +84,27 @@ end
  P2(:,2)=l2*cos(theta(:,4))+P1(:,2);
 
  
-%% Boucle Verlet 
-
-for i=1:Niter
-   
-    theta(i,3) = ((mu*g*theta(i,4))-((1+mu)*g*theta(i,1)))/l1;     % thetapp pendule 1
-    theta(i,6) = ((1+mu)*g*theta(i,1)-(1+mu)*g*theta(i,4))/l2;   % thetapp pendule 2
-    
-  
-    theta(i+1,1) = theta(i,1) + dt * theta(i,2)+ ((dt^2)/2) * theta(i,3) ; % theta pendule 1
-    theta(i+1,4) = theta(i,4) + dt * theta(i,5)+ ((dt^2)/2) * theta(i,6); % theta pendule 2
-
-    theta(i+1,2) = theta(i,2)+ (dt/2) * theta(i,3) + (dt/2) * (((mu*g*theta(i+1,4))-((1+mu)*g*theta(i+1,1)))/l1);  % thetapp pendule 1
-    theta(i+1,5) = theta(i,5)+ (dt/2) * theta(i,6) + (dt/2) * (((1+mu)*g*theta(i+1,1)-(1+mu)*g*theta(i+1,4))/l2);  % thetapp pendule 2
-    
-    
-end
- P1(:,1)=l1*sin(theta(:,1));
- P1(:,2)=l1*cos(theta(:,1));
-    
- P2(:,1)=l2*sin(theta(:,4))+P1(:,1);
- P2(:,2)=l2*cos(theta(:,4))+P1(:,2);
+% %% Boucle Verlet 
+% 
+% for i=1:Niter
+%    
+%     theta(i,3) = ((mu*g*theta(i,4))-((1+mu)*g*theta(i,1)))/l1;     % thetapp pendule 1
+%     theta(i,6) = ((1+mu)*g*theta(i,1)-(1+mu)*g*theta(i,4))/l2;   % thetapp pendule 2
+%     
+%   
+%     theta(i+1,1) = theta(i,1) + dt * theta(i,2)+ ((dt^2)/2) * theta(i,3) ; % theta pendule 1
+%     theta(i+1,4) = theta(i,4) + dt * theta(i,5)+ ((dt^2)/2) * theta(i,6); % theta pendule 2
+% 
+%     theta(i+1,2) = theta(i,2)+ (dt/2) * theta(i,3) + (dt/2) * (((mu*g*theta(i+1,4))-((1+mu)*g*theta(i+1,1)))/l1);  % thetapp pendule 1
+%     theta(i+1,5) = theta(i,5)+ (dt/2) * theta(i,6) + (dt/2) * (((1+mu)*g*theta(i+1,1)-(1+mu)*g*theta(i+1,4))/l2);  % thetapp pendule 2
+%     
+%     
+% end
+%  P1(:,1)=l1*sin(theta(:,1));
+%  P1(:,2)=l1*cos(theta(:,1));
+%     
+%  P2(:,1)=l2*sin(theta(:,4))+P1(:,1);
+%  P2(:,2)=l2*cos(theta(:,4))+P1(:,2);
 
 %% Energies
 
@@ -129,16 +140,35 @@ max4=max(Ep2); min4=min(Ep2);  %Max et min de l'énergie potentielle sur le pend
 max34=max(max3,max4); %Max entre Ep1 et Ep2
 maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'énergie potentielle totale
 
-maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ; 
-    %% détermination de la position initiale
+maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ;
+
+
+    %%détermination de la position initiale
 
     context_graph=1; % tracé de la position initial
-    Graph_Pendule(context_graph,P1(1,1),P1(1,2),P2(1,1),P2(1,2),l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot);
+    Graph_Pendule(context_graph,P1,P2,l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot,1);
 
-    %% actualisation position
-    for j = 1:Niter
+    %%actualisation position
+    
+    for j = 2:Niter
         t=dt*j;
         context_graph=2; % reactualisation du tracé pour afficher la position courante
-        Graph_Pendule(context_graph, P1(j,1),P1(j,2),P2(j,1),P2(j,2),l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot);
+        Graph_Pendule(context_graph, P1,P2,l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot,j);
         drawnow;
     end
+    
+%% Affichage secondaire
+% 
+% Erreur=zeros(Niter+1,2);
+% Erreur(:,1)=abs((theta(:,1)-aTheta(:,1)));
+% Erreur(:,2)=abs((theta(:,4)-aTheta(:,2)));
+% 
+% figure(1)
+% plot(t,Erreur(:,1),'.b');
+% hold on
+% plot(t,Erreur(:,2),'-r');
+% legend('Erreur sur theta1','Erreur sur theta2');
+% hold off
+
+
+
