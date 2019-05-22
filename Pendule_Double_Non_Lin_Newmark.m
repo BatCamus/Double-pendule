@@ -1,4 +1,4 @@
-%% pendule double non linéaire methode Newton Raphson
+%% pendule double non linéaire methode Newmark
 
 clear all
 close all
@@ -18,8 +18,6 @@ theta20p= 0;         % vitesse angulaire initiale du pendule 1
 theta10pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 1
 theta20pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 2
 mu = m2/m1;       % rapport des masses : utile pour simplifier l'Ã©quation
-anim=0; 
-poincare=1; 
 
 scz=get(0,'screensize'); %Taille écran
 
@@ -43,6 +41,10 @@ delta=0.1; %Pas d'intégration de Fnl
 M=eye(2); %Constante pour Newmark
 
 NUM=0; % Choix de jacobienne numérique ou analytique 0 pour analytique 1 pour numérique
+ERR_petit_angle=0; % Affichage erreur petit angle
+ERR_ODE_45=1; % Comparaison ODE 45
+ANIM=0; %Animation
+POINCARE=1; %Graphe poincare
 
 %% Solution analytique (VERIFICATION PETITS ANGLE)
 aTheta=zeros(Niter+1,2);
@@ -60,29 +62,68 @@ xt=xt';
 dxt=dxt';
 t=t';
 tt=tt';
-%% Calcul erreur (QUE PETITS ANGLE)
-Erreur=zeros(Niter+1,2);
-Erreur(:,1)=abs((xt(:,1)-aTheta(:,1)));
-Erreur(:,2)=abs((xt(:,2)-aTheta(:,2)));
 
-figure(1)
-plot(t,Erreur(:,1),'.b');
-hold on
-plot(t,Erreur(:,2),'-r');
-legend('Erreur sur theta1','Erreur sur theta2');
-hold off
+%% Calcul erreur petits angles
+if(ERR_petit_angle==1)
+    Erreur=zeros(Niter+1,2);
+    Erreur(:,1)=abs((xt(:,1)-aTheta(:,1)));
+    Erreur(:,2)=abs((xt(:,2)-aTheta(:,2)));
 
-P1=zeros(Niter+1,2);
-P1(:,1)=l1.*sin(xt(:,1));
-P1(:,2)=l1.*cos(xt(:,1));
+    figure(1)
+    plot(t,Erreur(:,1),'.b');
+    hold on
+    plot(t,Erreur(:,2),'-r');
+    legend('Erreur sur theta1','Erreur sur theta2');
+    hold off
+end
 
-P2=zeros(Niter+1,1);
-P2(:,1)=l2.*sin(xt(:,2));
-P2(:,2)=l2.*cos(xt(:,2));
+%% Comparaison ODE 45 Newamark
+if(ERR_ODE_45==1)
+
+    theta_NL0=[theta10 , theta10p ,theta20, theta20p];
+    options = odeset('AbsTol',1e-11,'RelTol',1e-11); 
+    [tt,x]=ode45(@Pendule_Double_Non_Lin, t ,theta_NL0,options);
+
+    ERR_ODE_45=zeros(Niter+1,2);
+    ERR_ODE_45(:,1)=abs(xt(:,1)-x(:,1));
+    ERR_ODE_45(:,2)=abs(xt(:,2)-x(:,3));
+
+    figure()
+    plot(tt,xt(:,1))
+    hold on
+    plot(tt,x(:,1),'r-')
+    title('Theta 1 pour ODE 45 et Newmark')
+    hold off
+
+    figure()
+    plot(tt,xt(:,2))
+    hold on
+    plot(tt,x(:,3))
+    title('Theta 2 pour ODE 45 et Newmark')
+    hold off
+
+    figure()
+    subplot(1,2,1)
+    plot(tt,ERR_ODE_45(:,1))
+    title('Erreur ODE 45-Newmark theta 1')
 
 
-if anim
-    
+    subplot(1,2,2)
+    plot(tt,ERR_ODE_45(:,2))
+    title('Erreur ODE 45-Newmark theta 2')
+
+end
+
+%% Affichage
+if ANIM
+    P1=zeros(Niter+1,2);
+    P1(:,1)=l1.*sin(xt(:,1));
+    P1(:,2)=l1.*cos(xt(:,1));
+
+    P2=zeros(Niter+1,1);
+    P2(:,1)=l2.*sin(xt(:,2));
+    P2(:,2)=l2.*cos(xt(:,2));
+  
     figure(2);
     axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
     title('Double pendule')
@@ -124,9 +165,9 @@ if anim
             drawnow
         end
 end 
-%% Section de poincaré
 
-if poincare
+%% Section de poincaré
+if POINCARE
 
     n1=max(size(xt(:,1)),size(xt(:,2)));
     %set the index of poincare points to 1
