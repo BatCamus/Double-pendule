@@ -93,7 +93,7 @@ scz=get(0,'screensize'); %Taille écran
      xlabel('t(s)')
      ylabel('Energie(J)')
      title('Evolution des énergies potentielles en fonction du temps');
-  %   legend('Energie potentielle pendule 1','Energie potentielle pendule 2','Energie potentielle système');
+  legend('Energie potentielle pendule 1','Energie potentielle pendule 2','Energie potentielle système');
      
           if contexte==1 %position initiale
             Energie_pot1=plot(t,Ep1,'k.','Markersize',10,'Color','black');

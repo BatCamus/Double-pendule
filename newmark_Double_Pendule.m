@@ -8,8 +8,8 @@ precNR=1.e-11;
 % sol init
 t=t_init;
 n=1;
-X=X0;dX=dX0; % X et dX sont des matrices (2,1) avec X(1) et X(2) représente les angles theta1 et theta2  
-%% et dX(1) et dX(2) les vitesses associés
+X=X0;dX=dX0; % X et dX sont des matrices (2,1) avec X(1) et X(2) reprÃ©sente les angles theta1 et theta2  
+%% et dX(1) et dX(2) les vitesses associÃ©s
 
 Fnl=zeros(size(X))
 dFX=zeros(length(X))
@@ -40,11 +40,11 @@ for t=t_init+dt:dt:t_tot;   %Boucle sur les pas de temps
         iter=iter+1;
     
         if(NUM==0)
-        % Calcul de la Jacobienne calculé à la main
+        % Calcul de la Jacobienne calculÃ© Ã  la main
         [dFX, dFdX]=calc_dFnl_Double_Pendule(X,dX);
         end
         if(NUM==1)
-        % Calcul de la Jacobienne numériquement 
+        % Calcul de la Jacobienne numÃ©riquement 
         [dFX, dFdX]=calc_dFnl_Double_Pendule_numerique(X,dX,Fnl);
         end
         
@@ -61,6 +61,6 @@ for t=t_init+dt:dt:t_tot;   %Boucle sur les pas de temps
         normres=norm(deltaX)/norm(X);
     end
     tt(n)=t;
-    Xt(:,n)=X;
+    Xt(:,n)=mod(X+pi,2*pi)-pi;
     dXt(:,n)=dX;
 end
