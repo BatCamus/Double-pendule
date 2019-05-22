@@ -42,10 +42,11 @@ M=eye(2); %Constante pour Newmark
 
 NUM=0; % Choix de jacobienne numérique ou analytique 0 pour analytique 1 pour numérique
 ERR_petit_angle=0; % Affichage erreur petit angle
-ERR_ODE_45=1; % Comparaison ODE 45
+ERR_ODE_45=0; % Comparaison ODE 45
 ANIM=0; %Animation
 POINCARE=0; %Graphe poincare
-
+Ener_Newmark=1; %Graphe Energie Newmark
+Ener_ODE45=0; %Graphe Energie ODE45
 
 
 %% Solution analytique (VERIFICATION PETITS ANGLE)
@@ -120,15 +121,16 @@ if ERR_ODE_45
 end
 
 %% Affichage
-if ANIM
-    P1=zeros(Niter+1,2);
-    P1(:,1)=l1.*sin(xt(:,1));
-    P1(:,2)=l1.*cos(xt(:,1));
 
-    P2=zeros(Niter+1,1);
-    P2(:,1)=l2.*sin(xt(:,2));
-    P2(:,2)=l2.*cos(xt(:,2));
-  
+P1=zeros(Niter+1,2);
+P1(:,1)=l1.*sin(xt(:,1));
+P1(:,2)=l1.*cos(xt(:,1));
+
+P2=zeros(Niter+1,1);
+P2(:,1)=l2.*sin(xt(:,2));
+P2(:,2)=l2.*cos(xt(:,2));
+
+if ANIM
     figure(5);
     axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
     title('Double pendule')
@@ -299,3 +301,151 @@ if POINCARE
     title('Section de poincaré en theta2')
     axis([min(xt(:,2))-0.2 max(xt(:,2))+0.2 min(dxt(:,2))-0.2 max(dxt(:,2))+0.2]);
 end 
+
+%% Energies ODE 45
+if Ener_ODE45
+           %Energies cinétiques
+
+           Ec1=0.5*m1*(l1^2)*(x(:,2).^2); %Energie cinétique pendule 1
+           Ec2=0.5*m2*((l1^2)*(x(:,2).^2)+(l2^2)*(x(:,4).^2)+(2*l1*l2).*(cos(x(:,1)-x(:,3)).*x(:,2).*x(:,4))); %Energie cinétique pendule 2
+
+           %Energies potentielles
+
+           Ep1=(-m1*g*l1).*cos(x(:,1)); %Energie cinétique pendule 1
+           Ep2=(-m2*g)*(l1.*cos(x(:,1))+l2.*cos(x(:,3))); %Energie cinétique pendule 2
+
+    % Affichage graphique
+    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'énergie cinétique sur le pendule 1
+    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'énergie cinétique sur le pendule 2
+    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'énergie cinétique totale
+
+    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'énergie potentielle sur le pendule 1
+    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'énergie potentielle sur le pendule 2
+    max34=max(max3,max4); %Max entre Ep1 et Ep2
+    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'énergie potentielle totale
+
+    maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ; 
+        % détermination de la position initiale
+
+        context_graph=1; % tracé de la position initial
+        Graph_Pendule(context_graph,P1(1,1),P1(1,2),P2(1,1),P2(1,2),l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot);
+
+        % actualisation position
+        for j = 1:Npas
+            t=dt*j;
+            context_graph=2; % reactualisation du tracé pour afficher la position courante
+            Graph_Pendule(context_graph, P1(j,1),P1(j,2),P2(j,1),P2(j,2),l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot);
+            drawnow;
+        end
+end
+
+%% Energies Newmark
+if Ener_Newmark
+           %Energies cinétiques
+
+           Ec1=0.5*m1*(l1^2)*(dxt(:,1).^2); %Energie cinétique pendule 1
+           Ec2=0.5*m2*((l1^2)*(dxt(:,1).^2)+(l2^2)*(dxt(:,2).^2)+(2*l1*l2).*(cos(xt(:,1)-xt(:,2)).*dxt(:,1).*dxt(:,2))); %Energie cinétique pendule 2
+
+           %Energies potentielles
+
+           Ep1=(-m1*g*l1).*cos(xt(:,1)); %Energie cinétique pendule 1
+           Ep2=(-m2*g)*(l1.*cos(xt(:,1))+l2.*cos(xt(:,2))); %Energie cinétique pendule 2
+
+    % Affichage graphique
+    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'énergie cinétique sur le pendule 1
+    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'énergie cinétique sur le pendule 2
+    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'énergie cinétique totale
+
+    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'énergie potentielle sur le pendule 1
+    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'énergie potentielle sur le pendule 2
+    max34=max(max3,max4); %Max entre Ep1 et Ep2
+    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'énergie potentielle totale
+
+    maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ; 
+        % détermination de la position initiale
+
+        context_graph=1; % tracé de la position initial
+        Graph_pendule(context_graph,P1,P2,l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot,1);
+
+        %%actualisation position
+
+        for j = 2:Niter
+            t=dt*j;
+            context_graph=2; % reactualisation du tracé pour afficher la position courante
+            Graph_pendule(context_graph, P1,P2,l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot,j);
+            drawnow;
+        end
+end
+
+%% Grille erreur relative : Schéma Newmark / analytique
+if grilleErr
+
+    dtheta=0.5;                         % Pas d'angle           
+    Range=10;                           % Angles extremes à atteindre
+    
+    t1d=-Range:dtheta:Range;
+    t2d=-Range:dtheta:Range;
+    t1=t1d*pi/180;
+    t2=t2d*pi/180;
+
+    W1=zeros(length(t1),length(t2));
+    W2=zeros(length(t1),length(t2));
+
+    for j=1:length(t1)                  % Boucle sur Theta1
+        for i=1:length(t2)              % Boucle sur Theta2
+            %ode45
+            
+            X0=[t1(1,j); t2(1,i)];
+            dX0=[0; 0];
+            [tt,xt,dxt]=newmark_Double_Pendule(X0,dX0,t0,dt,tf);
+            xt=xt';
+            
+            %Analytique
+            
+            C1 = (t2(i)-A2*t1(j))/(A1-A2);
+            C2 = (A1*t1(j)-(t2(i)))/(A1-A2);
+            phi1 = 0;                   % Vitesse initiale nulle!
+            phi2 = 0;                   % Vitesse initiale nulle!
+
+            aTheta=zeros(Npas+1,2);
+            aTheta(:,1)=C1*cos(w1*t+phi1)+C2*cos(w2*t+phi2);
+            aTheta(:,2)=C1*A1*cos(w1*t+phi1)+C2*A2*cos(w2*t+phi2);
+
+            %Erreur
+            Erreur=zeros(Npas+1,2);
+            Erreur(:,1)=abs((xt(:,1)-aTheta(:,1)));
+            Erreur(:,2)=abs((xt(:,2)-aTheta(:,2)));
+
+            ErreurRel1=abs(Erreur(:,1)/max(aTheta(:,1)));
+            ErreurRel2=abs(Erreur(:,2)/max(aTheta(:,2)));
+
+            erreur1=mean(ErreurRel1)*100;
+            erreur2=mean(ErreurRel2)*100;
+            erreur=max(erreur1,erreur2);
+
+            W1(j,i)=erreur1;
+            W2(j,i)=erreur2;
+
+
+        end
+            figure(25)
+            pcolor(t1d,t2d,W1)
+            caxis([0 5])
+%             caxis('auto')
+            xlabel('Theta1 en degres');
+            ylabel('Theta2 en degres');
+            title('Erreur relative sur theta1 en %');
+            colorbar('EastOutside')
+            drawnow
+           
+            figure(26)
+            pcolor(t1d,t2d,W2)
+            caxis([0 5])
+%             caxis('auto')
+            xlabel('Theta1 en degres');
+            ylabel('Theta2 en degres');
+            title('Erreur relative sur theta2 en %');
+            colorbar('EastOutside')
+            drawnow
+    end
+end

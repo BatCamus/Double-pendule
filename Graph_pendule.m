@@ -1,4 +1,4 @@
-function Graph_Pendule(contexte,P1,P2,l1,l2,t,tf,Ec1,Ec2,Ep1,Ep2,maxt,mint,max34,minp,maxtot,mintot,j)
+function Graph_pendule(contexte,P1,P2,l1,l2,t,tf,Ec1,Ec2,Ep1,Ep2,maxt,mint,max34,minp,maxtot,mintot,j)
 
 global pendule_masse1 pendule_tige1 pendule_masse2 pendule_tige2 Energie_cin1 Energie_cin2 Energie_cint Energie_pott Energie_t Energie_pot1 Energie_pot2 pendule_traj
 
