@@ -9,16 +9,17 @@ global M NUM delta Niter
 g = 9.81;         % gravitÃ© terrestre
 m1 = 2;           % masse du pendule 1
 m2 = 3;           % masse du pendule 2
-l1 = 3;           % longueur du pendule 1
+l1 = 3;           % longueur du pendule 1                                                            
 l2 =2 ;% longueur du pendule 2
-theta10 =pi/2;      % angle formÃ© par le pendule 1 avec la verticale
-theta20 = 3*pi/4;        % angle formÃ© par le pendule 2 avec la verticale
+theta10 =pi/12;      % angle forme par le pendule 1 avec la verticale
+theta20 = pi/6;        % angle forme par le pendule 2 avec la verticale
 theta10p= 0;         %vitesse angulaire initiale du pendule 1
 theta20p= 0;         % vitesse angulaire initiale du pendule 1
 theta10pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 1
 theta20pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 2
 mu = m2/m1;       % rapport des masses : utile pour simplifier l'Ã©quation
-
+anim=0; 
+poincare=1; 
 
 scz=get(0,'screensize'); %Taille écran
 
@@ -79,47 +80,53 @@ P2=zeros(Niter+1,1);
 P2(:,1)=l2.*sin(xt(:,2));
 P2(:,2)=l2.*cos(xt(:,2));
 
-figure(2);
-axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
-title('Double pendule')
-pendule_masse1=plot(P1(1,1),-P1(1,2),'k.','MarkerSize',40,'Color','red');
-hold on
-pendule_tige1=plot([0,P1(1,1)],[0,-P1(1,2)],'LineWidth',1);
-hold on
-pendule_masse2=plot(P2(1,1),-P2(1,2),'k.','MarkerSize',40,'Color','red');
-hold on
-pendule_tige2=plot([P1(1,1),P2(1,1)],[-P1(1,2),-P2(1,2)],'LineWidth',1);
-hold on
 
-longueur1=sqrt(P1(:,1).^2+P1(:,2).^2);
-longueur2=sqrt(P2(:,1).^2+P2(:,2).^2);
+if anim
+    
+    figure(2);
+    axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
+    title('Double pendule')
+    pendule_masse1=plot(P1(1,1),-P1(1,2),'k.','MarkerSize',40,'Color','red');
+    hold on
+    pendule_tige1=plot([0,P1(1,1)],[0,-P1(1,2)],'LineWidth',1);
+    hold on
+    pendule_masse2=plot(P2(1,1),-P2(1,2),'k.','MarkerSize',40,'Color','red');
+    hold on
+    pendule_tige2=plot([P1(1,1),P2(1,1)],[-P1(1,2),-P2(1,2)],'LineWidth',1);
+    hold on
 
-P2(:,1)=l2.*sin(xt(:,2))+P1(:,1);
-P2(:,2)=l2.*cos(xt(:,2))+P1(:,2);
+    longueur1=sqrt(P1(:,1).^2+P1(:,2).^2);
+    longueur2=sqrt(P2(:,1).^2+P2(:,2).^2);
 
-pendule_traj=plot(P2(1,1),-P2(1,2),'.b','Markersize',5);
-hold on
-axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
-% for j = 1:Niter
-%     hold on
-%     set(pendule_masse1,'XData',P1(j,1),'YData',-P1(j,2));
-%     set(pendule_tige1,'XData',[0,P1(j,1)],'YData',[0,-P1(j,2)]);
-%     set(pendule_masse2,'XData',P2(j,1),'YData',-P2(j,2));
-%     set(pendule_tige2,'XData',[P1(j,1),P2(j,1)],'YData',[-P1(j,2),-P2(j,2)]);
-%     
-%     
-%     if j> 100
-%      set(pendule_traj,'XData',P2(j-100:j,1),'YData',-P2(j-100:j,2));
-%     end
-%     if j<100
-%         set(pendule_traj,'XData',P2(1:j,1),'YData',-P2(1:j,2));
-%     end 
-% %     plot(P2(j,1),-P2(j,2),'.b','Markersize',5)
-%     drawnow
-% end
+    P2(:,1)=l2.*sin(xt(:,2))+P1(:,1);
+    P2(:,2)=l2.*cos(xt(:,2))+P1(:,2);
 
+    pendule_traj=plot(P2(1,1),-P2(1,2),'.b','Markersize',5);
+    hold on
+    axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
+
+
+    for j = 1:Niter
+         hold on
+         set(pendule_masse1,'XData',P1(j,1),'YData',-P1(j,2));
+         set(pendule_tige1,'XData',[0,P1(j,1)],'YData',[0,-P1(j,2)]);
+         set(pendule_masse2,'XData',P2(j,1),'YData',-P2(j,2));
+         set(pendule_tige2,'XData',[P1(j,1),P2(j,1)],'YData',[-P1(j,2),-P2(j,2)]);
+
+% 
+%             if j> 100
+%              set(pendule_traj,'XData',P2(j-100:j,1),'YData',-P2(j-100:j,2));
+%             end
+%             if j<100
+%                 set(pendule_traj,'XData',P2(1:j,1),'YData',-P2(1:j,2));
+%             end 
+            plot(P2(j,1),-P2(j,2),'.b','Markersize',5)
+            drawnow
+        end
+end 
 %% Section de poincaré
 
+if poincare
 
     n1=max(size(xt(:,1)),size(xt(:,2)));
     %set the index of poincare points to 1
@@ -128,26 +135,43 @@ axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
     %Création matrices ps 
     ps1=zeros(n1(1),2);
     ps2=zeros(n1(1),2);
+    
+   %Précision des points d'intersections
+   Atol=10^(-1);
 
-    %2*x(i,1))>x(i,2)-10^(-4) && 2*x(i,1)<x(i,2)+10^(-4) % autre condition section
+    
+
+%
 
 
 
-
-
-    for i=1:n1(1)
-            % detect the cros-section of the trajectory with the plane y1-y2
-            if((abs(xt(i,1))<10^(-2))) %||(abs(x(i,3))<10^(-3))
-                % store detected cross-section point y1,y2 to ps1,ps2
-                ps1(np1,1)=xt(i,1);
-                ps1(np1,2)=dxt(i,1);
+    for i=2:n1(1)
+            % detect the cros-section of the trajectory with the plane
+            % y1-y2 %Penser à prendre le point le plus proche
+            
+            if (xt(i,1)*xt(i-1,1)<0 && dxt(i,1)>0 &&  abs(xt(i,1))<2)
+                if(abs(xt(i,1))<abs(xt(i-1,1)))
+                    % store detected cross-section point y1,y2 to ps1,ps2
+                    ps1(np1,1)=xt(i,1);
+                    ps1(np1,2)=dxt(i,1);
+                else 
+                    % store detected cross-section point y1,y2 to ps1,ps2
+                    ps1(np1,1)=xt(i-1,1);
+                    ps1(np1,2)=dxt(i-1,1);
+                end 
                 % increase the index of poincare point
                 np1=np1+1;
             end
-             if((abs(xt(i,2))<10^(-2)))
-                % store detected cross-section point y1,y2 to ps1,ps2
-                ps2(np2,1)=xt(i,2);
-                ps2(np2,2)=dxt(i,2);
+             if (xt(i,2)*xt(i-1,2)<0 && dxt(i,2)>0 && abs(xt(i,2))<2) 
+                 if(abs(xt(i,2))<abs(xt(i-1,2)))
+                    % store detected cross-section point y1,y2 to ps1,ps2
+                    ps2(np2,1)=xt(i,2);
+                    ps2(np2,2)=dxt(i,2);
+                 else 
+                    % store detected cross-section point y1,y2 to ps1,ps2
+                    ps2(np2,1)=xt(i-1,2);
+                    ps2(np2,2)=dxt(i-1,2);
+                 end  
                 % increase the index of poincare point
                 np2=np2+1;
             end
@@ -216,8 +240,10 @@ axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
         x2(i,1)=ps2(i,1);
         x2(i,2)=ps2(i,2);
     end 
+    
     plot(x2(:,1),x2(:,2),'r+','markersize', 5)
     xlabel('theta2')
     ylabel('d(theta2)/dt (rad/s)')
     title('Section de poincaré en theta2')
     axis([min(xt(:,2))-0.2 max(xt(:,2))+0.2 min(dxt(:,2))-0.2 max(dxt(:,2))+0.2]);
+end 
