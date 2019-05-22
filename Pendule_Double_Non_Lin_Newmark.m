@@ -44,7 +44,9 @@ NUM=0; % Choix de jacobienne numérique ou analytique 0 pour analytique 1 pour n
 ERR_petit_angle=0; % Affichage erreur petit angle
 ERR_ODE_45=1; % Comparaison ODE 45
 ANIM=0; %Animation
-POINCARE=1; %Graphe poincare
+POINCARE=0; %Graphe poincare
+
+
 
 %% Solution analytique (VERIFICATION PETITS ANGLE)
 aTheta=zeros(Niter+1,2);
@@ -64,7 +66,7 @@ t=t';
 tt=tt';
 
 %% Calcul erreur petits angles
-if(ERR_petit_angle==1)
+if ERR_petit_angle
     Erreur=zeros(Niter+1,2);
     Erreur(:,1)=abs((xt(:,1)-aTheta(:,1)));
     Erreur(:,2)=abs((xt(:,2)-aTheta(:,2)));
@@ -75,10 +77,10 @@ if(ERR_petit_angle==1)
     plot(t,Erreur(:,2),'-r');
     legend('Erreur sur theta1','Erreur sur theta2');
     hold off
-end
+end 
 
 %% Comparaison ODE 45 Newamark
-if(ERR_ODE_45==1)
+if ERR_ODE_45
 
     theta_NL0=[theta10 , theta10p ,theta20, theta20p];
     options = odeset('AbsTol',1e-11,'RelTol',1e-11); 
@@ -88,21 +90,24 @@ if(ERR_ODE_45==1)
     ERR_ODE_45(:,1)=abs(xt(:,1)-x(:,1));
     ERR_ODE_45(:,2)=abs(xt(:,2)-x(:,3));
 
-    figure()
+    figure(2)
+    set(figure(2),'position',[3*scz(3)/4-10 0 scz(3)/4 scz(4)/2.2-40]);
     plot(tt,xt(:,1))
     hold on
     plot(tt,x(:,1),'r-')
     title('Theta 1 pour ODE 45 et Newmark')
     hold off
 
-    figure()
+    figure(3)
+    set(figure(3),'position',[3*scz(3)/4-10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
     plot(tt,xt(:,2))
     hold on
     plot(tt,x(:,3))
     title('Theta 2 pour ODE 45 et Newmark')
     hold off
 
-    figure()
+    figure(4)
+    set(figure(4),'position',[100 300 scz(3)/2 scz(4)/2-40]);
     subplot(1,2,1)
     plot(tt,ERR_ODE_45(:,1))
     title('Erreur ODE 45-Newmark theta 1')
@@ -124,7 +129,7 @@ if ANIM
     P2(:,1)=l2.*sin(xt(:,2));
     P2(:,2)=l2.*cos(xt(:,2));
   
-    figure(2);
+    figure(5);
     axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
     title('Double pendule')
     pendule_masse1=plot(P1(1,1),-P1(1,2),'k.','MarkerSize',40,'Color','red');
@@ -167,6 +172,7 @@ if ANIM
 end 
 
 %% Section de poincaré
+
 if POINCARE
 
     n1=max(size(xt(:,1)),size(xt(:,2)));
@@ -187,44 +193,49 @@ if POINCARE
 
 
     for i=2:n1(1)
-            % detect the cros-section of the trajectory with the plane
-            % y1-y2 %Penser à prendre le point le plus proche
-            
+            %Trouver les points passant par un plan défini (ici theta1=0)
             if (xt(i,1)*xt(i-1,1)<0 && dxt(i,1)>0 &&  abs(xt(i,1))<2)
+                
+                %choix du point le plus proche entre celui à gauche et à droite du plan theta1=0
                 if(abs(xt(i,1))<abs(xt(i-1,1)))
-                    % store detected cross-section point y1,y2 to ps1,ps2
+                    
+                    % Sauvegarde des points d'intersection en theta1=0
                     ps1(np1,1)=xt(i,1);
                     ps1(np1,2)=dxt(i,1);
                 else 
-                    % store detected cross-section point y1,y2 to ps1,ps2
+                    % Sauvegarde des points d'intersection en theta1=0
                     ps1(np1,1)=xt(i-1,1);
                     ps1(np1,2)=dxt(i-1,1);
                 end 
-                % increase the index of poincare point
+                % Incrémentation 
                 np1=np1+1;
             end
-             if (xt(i,2)*xt(i-1,2)<0 && dxt(i,2)>0 && abs(xt(i,2))<2) 
+            %Trouver les points passant par un plan défini (ici theta2=0)
+            if (xt(i,2)*xt(i-1,2)<0 && dxt(i,2)>0 && abs(xt(i,2))<2) 
+                
+                 %choix du point le plus proche entre celui à gauche et à droite du plan theta2=0
                  if(abs(xt(i,2))<abs(xt(i-1,2)))
-                    % store detected cross-section point y1,y2 to ps1,ps2
+                     
+                    % Sauvegarde des points d'intersection en theta2=0
                     ps2(np2,1)=xt(i,2);
                     ps2(np2,2)=dxt(i,2);
                  else 
-                    % store detected cross-section point y1,y2 to ps1,ps2
+                    % Sauvegarde des points d'intersection en theta2=0
                     ps2(np2,1)=xt(i-1,2);
                     ps2(np2,2)=dxt(i-1,2);
                  end  
-                % increase the index of poincare point
+                %  Incrémentation 
                 np2=np2+1;
             end
     end
 
 
-    figure(3) 
-    set(figure(3),'position',[10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
+    figure(6) 
+    set(figure(6),'position',[10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
     plot(xt(:,1),dxt(:,1),'c-','Markersize',2)
     xlabel('theta1')
-    ylabel('d(theta1)/dt (rad/s)')
-    title('Portrait de phase en theta1')
+    ylabel('d(theta1)/dt (rad/s)') 
+    title('Portrait de phase en theta1') 
     hold on 
     axis([min(xt(:,1))-0.2 max(xt(:,1))+0.2 min(dxt(:,1))-0.2 max(dxt(:,1))+0.2]);
 
@@ -239,8 +250,8 @@ if POINCARE
 
                     %%%%%%%%%%%%
 
-    figure(4)
-    set(figure(4),'position',[10 0 scz(3)/4 scz(4)/2.2-40]);
+    figure(7)
+    set(figure(7),'position',[10 0 scz(3)/4 scz(4)/2.2-40]);
     x1=zeros(np1-1,2);
     for i=1:np1-1
         x1(i,1)=ps1(i,1);
@@ -254,8 +265,8 @@ if POINCARE
 
                      %%%%%%%%%%%%
 
-    figure(5) 
-    set(figure(5),'position',[3*scz(3)/4-10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
+    figure(8) 
+    set(figure(8),'position',[3*scz(3)/4-10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
     plot(xt(:,2),dxt(:,2),'c-','Markersize',2)
     xlabel('theta2')
     ylabel('d(theta2)/dt (rad/s)')
@@ -273,8 +284,8 @@ if POINCARE
                      %%%%%%%%%%%%
 
 
-    figure(6)
-    set(figure(6),'position',[3*scz(3)/4-10 0 scz(3)/4 scz(4)/2.2-40]);
+    figure(9)
+    set(figure(9),'position',[3*scz(3)/4-10 0 scz(3)/4 scz(4)/2.2-40]);
     x2=zeros(np2-1,2);
 
     for i=1:np2-1
