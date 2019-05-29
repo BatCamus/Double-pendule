@@ -11,10 +11,10 @@ m1 = 2;           % masse du pendule 1
 m2 = 3;           % masse du pendule 2
 l1 = 3;           % longueur du pendule 1                                                            
 l2 =2 ;% longueur du pendule 2
-theta10=30*pi/180;      % angle forme par le pendule 1 avec la verticale
-theta20= 5*pi/180;        % angle forme par le pendule 2 avec la verticale
+theta10=1*pi/180;      % angle forme par le pendule 1 avec la verticale
+theta20= 1*pi/180;        % angle forme par le pendule 2 avec la verticale
 theta10p= 0;         %vitesse angulaire initiale du pendule 1
-theta20p= 1;         % vitesse angulaire initiale du pendule 1
+theta20p= 0;         % vitesse angulaire initiale du pendule 1
 theta10pp = 0;     % acceleration angulaire initiale du pendule 1
 theta20pp = 0;     % acceleration angulaire initiale du pendule 2
 mu = m2/m1;       % rapport des masses : utile pour simplifier l'equation
@@ -31,8 +31,8 @@ C2 = (A1*theta10-theta20)/(A1-A2);
 phi1 = asin((theta20p-A2*theta10p)/(C1*w1*(A2-A1)));
 phi2 = asin((A1*theta10p-theta20p)/(C2*w2*(A2-A1)));
 
-Niter= 10000; % Nombre d'iterations
-dt = 0.01; % Intervalle de temps
+Niter= 1000000; % Nombre d'iterations
+dt = 0.000001; % Intervalle de temps
 tf = Niter * dt; %Temps de modelisation 
 t0=0;
 t =t0:dt:tf ; %Matrice temps
@@ -41,13 +41,13 @@ delta=0.1; %Pas d'integration de Fnl
 M=eye(2); %Constante pour Newmark
 
 NUM=0; % Choix de jacobienne numerique ou analytique 0 pour analytique 1 pour numerique
-ERR_petit_angle=0; % Affichage erreur petit angle
+ERR_petit_angle=1; % Affichage erreur petit angle
 ERR_ODE_45=0; % Comparaison ODE 45
-ANIM=1; %Animation
+ANIM=0; %Animation
 POINCARE=0; %Graphe poincare
 Ener_Newmark=0; %Graphe Energie Newmark
 Ener_ODE45=0; %Graphe Energie ODE45
-
+grilleErr=0
 
 %% Solution analytique (VERIFICATION PETITS ANGLE)
 aTheta=zeros(Niter+1,2);
@@ -89,6 +89,7 @@ if ERR_ODE_45
     options = odeset('AbsTol',1e-11,'RelTol',1e-11); 
     [tt,x]=ode45(@Pendule_Double_Non_Lin, t ,theta_NL0,options);
 
+    %Newmark-ODE45
     ERR_ODE_45=zeros(Niter+1,2);
     ERR_ODE_45(:,1)=abs(xt(:,1)-x(:,1));
     ERR_ODE_45(:,2)=abs(xt(:,2)-x(:,3));
