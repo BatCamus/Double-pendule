@@ -11,10 +11,10 @@ m1 = 2;           % masse du pendule 1
 m2 = 3;           % masse du pendule 2
 l1 = 3;           % longueur du pendule 1                                                            
 l2 =2 ;% longueur du pendule 2
-theta10 =pi/12;      % angle forme par le pendule 1 avec la verticale
-theta20 = pi/6;        % angle forme par le pendule 2 avec la verticale
+theta10=30*pi/180;      % angle forme par le pendule 1 avec la verticale
+theta20= 5*pi/180;        % angle forme par le pendule 2 avec la verticale
 theta10p= 0;         %vitesse angulaire initiale du pendule 1
-theta20p= 0;         % vitesse angulaire initiale du pendule 1
+theta20p= 1;         % vitesse angulaire initiale du pendule 1
 theta10pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 1
 theta20pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 2
 mu = m2/m1;       % rapport des masses : utile pour simplifier l'Ã©quation
@@ -44,8 +44,8 @@ NUM=0; % Choix de jacobienne numérique ou analytique 0 pour analytique 1 pour n
 ERR_petit_angle=0; % Affichage erreur petit angle
 ERR_ODE_45=0; % Comparaison ODE 45
 ANIM=0; %Animation
-POINCARE=0; %Graphe poincare
-Ener_Newmark=1; %Graphe Energie Newmark
+POINCARE=1; %Graphe poincare
+Ener_Newmark=0; %Graphe Energie Newmark
 Ener_ODE45=0; %Graphe Energie ODE45
 
 
