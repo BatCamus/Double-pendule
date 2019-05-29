@@ -309,8 +309,93 @@ if POINCARE
 end 
 
 
-
 %% Diagramme bifurcation en fonction de theta20 
+
+    for babe=0:0.2:3.2
+        
+        clear ps1 ps2 np1 np2 n1
+       
+        
+        
+        X0=[babe ; babe];
+        dX0=[0; 0];
+
+        
+        [tt,xt,dxt]=newmark_Double_Pendule(X0,dX0,t0,dt,tf);
+        
+        xt=xt';
+        dxt=dxt';
+        t=t';
+        tt=tt';
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%% Poincaré %%%%%%%%%%%%%%%%%%%%
+        
+        
+        %Initialisation variables 
+            n1=max(size(xt(:,1)),size(xt(:,2)));
+            %set the index of poincare points to 1
+            np1=1;
+            np2=1; 
+            %Création matrices ps 
+            ps1=zeros(n1(1),2);
+            ps2=zeros(n1(1),2);
+
+
+
+i
+
+
+
+        for i=2:n1(1)
+                %Trouver les points passant par un plan défini (ici theta1=0)
+                if (xt(i,1)*xt(i-1,1)<0 && dxt(i,1)>0 &&  abs(xt(i,1))<2)
+
+                    %choix du point le plus proche entre celui à gauche et à droite du plan theta1=0
+                    if(abs(xt(i,1))<abs(xt(i-1,1)))
+
+                         % Sauvegarde des points d'intersection en theta2=0
+                        ps1(np1,1)=xt(i,2);
+                        ps1(np1,2)=dxt(i,2);
+                     else 
+                        % Sauvegarde des points d'intersection en theta2=0
+                        ps1(np1,1)=xt(i-1,2);
+                        ps1(np1,2)=dxt(i-1,2);
+                     end  
+                    % Incrémentation 
+                    np1=np1+1;
+                end
+                %Trouver les points passant par un plan défini (ici theta2=0)
+                if (xt(i,2)*xt(i-1,2)<0 && dxt(i,2)>0 && abs(xt(i,2))<2) 
+
+                     %choix du point le plus proche entre celui à gauche et à droite du plan theta2=0
+                     if(abs(xt(i,2))<abs(xt(i-1,2)))
+
+                        % Sauvegarde des points d'intersection en theta2=0
+                        ps2(np2,1)=xt(i,1);
+                        ps2(np2,2)=dxt(i,1);
+                     else 
+                        % Sauvegarde des points d'intersection en theta2=0
+                        ps2(np2,1)=xt(i-1,1);
+                        ps2(np2,2)=dxt(i-1,1);
+                     end  
+                    %  Incrémentation 
+                    np2=np2+1;
+                end
+                i
+        end
+        figure(100) 
+        
+            plot(babe,ps1(:,1),'Markersize', 5)
+        
+        axis([0 3.2 -3.2 3.2])
+        drawnow; 
+        pause(0.2);
+        babe
+      
+    end 
+
+
 
 
 
