@@ -11,8 +11,8 @@ m1 = 2;           % masse du pendule 1
 m2 = 3;           % masse du pendule 2
 l1 = 3;           % longueur du pendule 1                                                            
 l2 =2 ;% longueur du pendule 2
-theta10 =pi/12;      % angle forme par le pendule 1 avec la verticale
-theta20 = pi/6;        % angle forme par le pendule 2 avec la verticale
+theta10 =30*pi/180;      % angle forme par le pendule 1 avec la verticale
+theta20 = 5*pi/180;        % angle forme par le pendule 2 avec la verticale
 theta10p= 0;         %vitesse angulaire initiale du pendule 1
 theta20p= 0;         % vitesse angulaire initiale du pendule 1
 theta10pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 1
@@ -184,13 +184,10 @@ if POINCARE
     %Création matrices ps 
     ps1=zeros(n1(1),2);
     ps2=zeros(n1(1),2);
-    
-   %Précision des points d'intersections
-   Atol=10^(-1);
+
 
     
 
-%
 
 
 
@@ -230,6 +227,8 @@ if POINCARE
                 np2=np2+1;
             end
     end
+    
+                    %%%%%%Portait de phase theta1%%%%%%%
 
 
     figure(6) 
@@ -250,8 +249,9 @@ if POINCARE
 
 
 
-                    %%%%%%%%%%%%
-
+                    %%%%%%Section poincaré theta1%%%%%%%
+    
+                    
     figure(7)
     set(figure(7),'position',[10 0 scz(3)/4 scz(4)/2.2-40]);
     x1=zeros(np1-1,2);
@@ -265,7 +265,8 @@ if POINCARE
     title('Section de poincaré en theta1')
     axis([min(xt(:,1))-0.2 max(xt(:,1))+0.2 min(dxt(:,1))-0.2 max(dxt(:,1))+0.2]);
 
-                     %%%%%%%%%%%%
+                    %%%%%%Portait de phase theta1%%%%%%%
+
 
     figure(8) 
     set(figure(8),'position',[3*scz(3)/4-10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
@@ -280,10 +281,11 @@ if POINCARE
     for i=1:np2-1
         plot(ps2(i,1),ps2(i,2),'r+','markersize', 5)
         % Possibilité de faire un affichage en temps réel
-        %pause(2);
+        % pause(2);
     end
 
-                     %%%%%%%%%%%%
+    
+                     %%%%%%Section poincaré theta1%%%%%%%
 
 
     figure(9)
@@ -301,6 +303,16 @@ if POINCARE
     title('Section de poincaré en theta2')
     axis([min(xt(:,2))-0.2 max(xt(:,2))+0.2 min(dxt(:,2))-0.2 max(dxt(:,2))+0.2]);
 end 
+
+
+%% Diagramme bifurcation en fonction de theta20 
+
+
+
+
+
+
+
 
 %% Energies ODE 45
 if Ener_ODE45
