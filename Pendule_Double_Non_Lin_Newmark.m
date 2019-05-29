@@ -405,7 +405,8 @@ if grilleErr
 
     for j=1:length(t1)                  % Boucle sur Theta1
         for i=1:length(t2)              % Boucle sur Theta2
-            %ode45
+        
+            % Newmark
             
             X0=[t1(1,j); t2(1,i)];
             dX0=[0; 0];
