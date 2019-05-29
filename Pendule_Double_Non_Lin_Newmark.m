@@ -176,6 +176,7 @@ if ANIM
         end
 end 
 
+
 %% Section de poincaré
 
 if POINCARE
@@ -306,6 +307,7 @@ if POINCARE
     title('Section de poincaré en theta2=0')
     axis([min(xt(:,1)) max(xt(:,1)) min(dxt(:,1)) max(dxt(:,1))]);
 end 
+
 
 
 %% Diagramme bifurcation en fonction de theta20 
