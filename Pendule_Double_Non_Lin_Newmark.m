@@ -310,10 +310,11 @@ end
 
 
 %% Diagramme bifurcation en fonction de theta20 
-
+N=3.2/0.2+1;
+ps=zeros(100,N);
     for babe=0:0.2:3.2
         
-        clear ps1 ps2 np1 np2 n1
+        clear ps1 ps2 np1 np2 n1 i j 
        
         
         
@@ -343,7 +344,7 @@ end
 
 
 
-i
+
 
 
 
@@ -382,18 +383,18 @@ i
                     %  Incrémentation 
                     np2=np2+1;
                 end
-                i
+                
         end
-        figure(100) 
+        for j=1:np1-1
+            ps(j,i)=psi(j,1);
+            plot
+        end 
         
-            plot(babe,ps1(:,1),'Markersize', 5)
-        
-        axis([0 3.2 -3.2 3.2])
-        drawnow; 
-        pause(0.2);
-        babe
-      
+       
     end 
+    
+
+
 
 
 
