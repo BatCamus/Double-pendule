@@ -54,9 +54,9 @@ aTheta=zeros(Niter+1,2);
 aTheta(:,1)=C1*cos(w1*t+phi1)+C2*cos(w2*t+phi2);
 aTheta(:,2)=C1*A1*cos(w1*t+phi1)+C2*A2*cos(w2*t+phi2);
 
-%% solution par resolution numerique Newmark
-X0=[theta10 ; theta20];
-dX0=[theta10p; theta20p];
+%% solution par resolution numérique Newmark
+X0=[theta10 ; theta10p];
+dX0=[theta20; theta20p];
 
 tic
 [tt,xt,dxt]=newmark_Double_Pendule(X0,dX0,t0,dt,tf); % Integration par Newmark
@@ -153,7 +153,7 @@ if ANIM
 
     pendule_traj=plot(P2(1,1),-P2(1,2),'.b','Markersize',5);
     hold on
-    axis([-1.2*(l1+l2) 1.2*(l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
+    axis([-(l1+l2) (l1+l2) -1.2*(l1+l2) 1.2*(l1+l2)]); %// freeze axes
 
 
     for j = 1:Niter
@@ -163,19 +163,19 @@ if ANIM
          set(pendule_masse2,'XData',P2(j,1),'YData',-P2(j,2));
          set(pendule_tige2,'XData',[P1(j,1),P2(j,1)],'YData',[-P1(j,2),-P2(j,2)]);
 
-         % Effacage des points au fur et a mesure
-         if j> 100
-            set(pendule_traj,'XData',P2(j-100:j,1),'YData',-P2(j-100:j,2));
-         end
-         if j<100
-                set(pendule_traj,'XData',P2(1:j,1),'YData',-P2(1:j,2));
-         end 
+% 
+%             if j> 100
+%              set(pendule_traj,'XData',P2(j-100:j,1),'YData',-P2(j-100:j,2));
+%             end
+%             if j<100
+%                 set(pendule_traj,'XData',P2(1:j,1),'YData',-P2(1:j,2));
+%             end 
             plot(P2(j,1),-P2(j,2),'.b','Markersize',5)
             drawnow
         end
 end 
 
-%% Section de poincare
+%% Section de poincaré
 
 if POINCARE
 
@@ -183,7 +183,7 @@ if POINCARE
     %set the index of poincare points to 1
     np1=1;
     np2=1; 
-    %Creation matrices ps 
+    %Création matrices ps 
     ps1=zeros(n1(1),2);
     ps2=zeros(n1(1),2);
 
@@ -251,7 +251,7 @@ if POINCARE
 
 
 
-                    %%%%%%Section poincare theta1%%%%%%%
+                    %%%%%%Section poincaré theta1%%%%%%%
     
                     
     figure(7)
@@ -318,34 +318,36 @@ end
 
 %% Energies ODE 45
 if Ener_ODE45
-           %Energies cinetiques
-           Ec1=0.5*m1*(l1^2)*(x(:,2).^2); %Energie cinetique pendule 1
+           %Energies cinétiques
+
+           Ec1=0.5*m1*(l1^2)*(x(:,2).^2); %Energie cinétique pendule 1
            Ec2=0.5*m2*((l1^2)*(x(:,2).^2)+(l2^2)*(x(:,4).^2)+(2*l1*l2).*(cos(x(:,1)-x(:,3)).*x(:,2).*x(:,4))); %Energie cinétique pendule 2
 
            %Energies potentielles
-           Ep1=(-m1*g*l1).*cos(x(:,1)); %Energie cinetique pendule 1
-           Ep2=(-m2*g)*(l1.*cos(x(:,1))+l2.*cos(x(:,3))); %Energie cinetique pendule 2
+
+           Ep1=(-m1*g*l1).*cos(x(:,1)); %Energie cinétique pendule 1
+           Ep2=(-m2*g)*(l1.*cos(x(:,1))+l2.*cos(x(:,3))); %Energie cinétique pendule 2
 
     % Affichage graphique
-    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'energie cinetique sur le pendule 1
-    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'energie cinetique sur le pendule 2
-    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'energie cinetique totale
+    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'énergie cinétique sur le pendule 1
+    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'énergie cinétique sur le pendule 2
+    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'énergie cinétique totale
 
-    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'energie potentielle sur le pendule 1
-    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'energie potentielle sur le pendule 2
+    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'énergie potentielle sur le pendule 1
+    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'énergie potentielle sur le pendule 2
     max34=max(max3,max4); %Max entre Ep1 et Ep2
-    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'energie potentielle totale
+    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'énergie potentielle totale
 
     maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ; 
-        % determination de la position initiale
+        % détermination de la position initiale
 
-        context_graph=1; % trace de la position initial
+        context_graph=1; % tracé de la position initial
         Graph_Pendule(context_graph,P1(1,1),P1(1,2),P2(1,1),P2(1,2),l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot);
 
         % actualisation position
         for j = 1:Npas
             t=dt*j;
-            context_graph=2; % reactualisation du trace pour afficher la position courante
+            context_graph=2; % reactualisation du tracé pour afficher la position courante
             Graph_Pendule(context_graph, P1(j,1),P1(j,2),P2(j,1),P2(j,2),l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot);
             drawnow;
         end
@@ -353,43 +355,43 @@ end
 
 %% Energies Newmark
 if Ener_Newmark
-           %Energies cinetiques
+           %Energies cinétiques
 
-           Ec1=0.5*m1*(l1^2)*(dxt(:,1).^2); %Energie cinetique pendule 1
+           Ec1=0.5*m1*(l1^2)*(dxt(:,1).^2); %Energie cinétique pendule 1
            Ec2=0.5*m2*((l1^2)*(dxt(:,1).^2)+(l2^2)*(dxt(:,2).^2)+(2*l1*l2).*(cos(xt(:,1)-xt(:,2)).*dxt(:,1).*dxt(:,2))); %Energie cinétique pendule 2
 
            %Energies potentielles
 
-           Ep1=(-m1*g*l1).*cos(xt(:,1)); %Energie cinetique pendule 1
-           Ep2=(-m2*g)*(l1.*cos(xt(:,1))+l2.*cos(xt(:,2))); %Energie cinetique pendule 2
+           Ep1=(-m1*g*l1).*cos(xt(:,1)); %Energie cinétique pendule 1
+           Ep2=(-m2*g)*(l1.*cos(xt(:,1))+l2.*cos(xt(:,2))); %Energie cinétique pendule 2
 
     % Affichage graphique
-    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'energie cinetique sur le pendule 1
-    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'energie cinetique sur le pendule 2
-    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'energie cinetique totale
+    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'énergie cinétique sur le pendule 1
+    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'énergie cinétique sur le pendule 2
+    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'énergie cinétique totale
 
-    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'energie potentielle sur le pendule 1
-    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'energie potentielle sur le pendule 2
+    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'énergie potentielle sur le pendule 1
+    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'énergie potentielle sur le pendule 2
     max34=max(max3,max4); %Max entre Ep1 et Ep2
-    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'energie potentielle totale
+    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'énergie potentielle totale
 
     maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ; 
-        % determination de la position initiale
+        % détermination de la position initiale
 
-        context_graph=1; % trace de la position initial
+        context_graph=1; % tracé de la position initial
         Graph_pendule(context_graph,P1,P2,l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot,1);
 
         %%actualisation position
 
         for j = 2:Niter
             t=dt*j;
-            context_graph=2; % reactualisation du trace pour afficher la position courante
+            context_graph=2; % reactualisation du tracé pour afficher la position courante
             Graph_pendule(context_graph, P1,P2,l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot,j);
             drawnow;
         end
 end
 
-%% Grille erreur relative : Schema Newmark / analytique
+%% Grille erreur relative : Schéma Newmark / analytique
 if grilleErr
 
     dtheta=0.5;                         % Pas d'angle           

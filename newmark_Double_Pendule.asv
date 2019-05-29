@@ -36,19 +36,17 @@ for t=t_init+dt:dt:t_tot   %Boucle sur les pas de temps
         iter=iter+1;
     
         if (NUM==0)
-        % Calcul de la Jacobienne calcule a la main
+        % Calcul de la Jacobienne calculé à la main
         [dFX, dFdX]=calc_dFnl_Double_Pendule(X,dX);
         end
         if NUM
-        % Calcul de la Jacobienne numeriquement 
+        % Calcul de la Jacobienne numériquement 
         [dFX, dFdX]=calc_dFnl_Double_Pendule_numerique(X,dX,Fnl);
         end
-
-        K_eff=(4/dt^2)*M+(2/dt)*dFdX+dFX; % Matrice de raideur effective 
-        % Calcul de la correction : deltaX
+        
+        K_eff=(4/dt^2)*M+(2/dt)*dFdX+dFX;
+        % Calcul de la correction
         deltaX=K_eff\res;
-        % On corrige les positions, vitesses et acceleration avec la
-        % corection calculee
         X=X+deltaX;
         dX=dX+(2/dt)*deltaX;
         ddX=ddX+(4/dt^2)*deltaX;
