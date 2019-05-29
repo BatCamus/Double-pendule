@@ -1,4 +1,4 @@
-%% pendule double non linéaire methode Newmark
+%% pendule double non linÃ©aire methode Newmark
 
 clear all
 close all
@@ -68,7 +68,7 @@ dxt=dxt';
 t=t';
 tt=tt';
 
-%% Calcul erreur petits angles : en comparant � la solution analytique dans l'hypothese des petits angles
+%% Calcul erreur petits angles : en comparant à la solution analytique dans l'hypothese des petits angles
 if ERR_petit_angle
     Erreur=zeros(Niter+1,2);
     Erreur(:,1)=abs((xt(:,1)-aTheta(:,1)));
@@ -175,7 +175,7 @@ if ANIM
         end
 end 
 
-%% Section de poincare
+%% Section de poincaré
 
 if POINCARE
 
@@ -183,7 +183,7 @@ if POINCARE
     %set the index of poincare points to 1
     np1=1;
     np2=1; 
-    %Creation matrices ps 
+    %Création matrices ps 
     ps1=zeros(n1(1),2);
     ps2=zeros(n1(1),2);
 
@@ -200,14 +200,14 @@ if POINCARE
                 %choix du point le plus proche entre celui à gauche et à droite du plan theta1=0
                 if(abs(xt(i,1))<abs(xt(i-1,1)))
                     
-                    % Sauvegarde des points d'intersection en theta1=0
-                    ps1(np1,1)=xt(i,1);
-                    ps1(np1,2)=dxt(i,1);
-                else 
-                    % Sauvegarde des points d'intersection en theta1=0
-                    ps1(np1,1)=xt(i-1,1);
-                    ps1(np1,2)=dxt(i-1,1);
-                end 
+                     % Sauvegarde des points d'intersection en theta2=0
+                    ps1(np1,1)=xt(i,2);
+                    ps1(np1,2)=dxt(i,2);
+                 else 
+                    % Sauvegarde des points d'intersection en theta2=0
+                    ps1(np1,1)=xt(i-1,2);
+                    ps1(np1,2)=dxt(i-1,2);
+                 end  
                 % Incrémentation 
                 np1=np1+1;
             end
@@ -218,29 +218,29 @@ if POINCARE
                  if(abs(xt(i,2))<abs(xt(i-1,2)))
                      
                     % Sauvegarde des points d'intersection en theta2=0
-                    ps2(np2,1)=xt(i,2);
-                    ps2(np2,2)=dxt(i,2);
+                    ps2(np2,1)=xt(i,1);
+                    ps2(np2,2)=dxt(i,1);
                  else 
                     % Sauvegarde des points d'intersection en theta2=0
-                    ps2(np2,1)=xt(i-1,2);
-                    ps2(np2,2)=dxt(i-1,2);
+                    ps2(np2,1)=xt(i-1,1);
+                    ps2(np2,2)=dxt(i-1,1);
                  end  
                 %  Incrémentation 
                 np2=np2+1;
             end
     end
     
-                    %%%%%%Portait de phase theta1%%%%%%%
+                    %%%%%%Portait de phase theta1=0%%%%%%%
 
 
     figure(6) 
     set(figure(6),'position',[10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
-    plot(xt(:,1),dxt(:,1),'c-','Markersize',2)
-    xlabel('theta1')
-    ylabel('d(theta1)/dt (rad/s)') 
-    title('Portrait de phase en theta1') 
+    plot(xt(:,2),dxt(:,2),'c-','Markersize',2)
+    xlabel('theta2')
+    ylabel('d(theta2)/dt (rad/s)') 
+    title('Portrait de phase en theta1=0') 
     hold on 
-    axis([min(xt(:,1))-0.2 max(xt(:,1))+0.2 min(dxt(:,1))-0.2 max(dxt(:,1))+0.2]);
+    axis([min(xt(:,2)) max(xt(:,2)) min(dxt(:,2)) max(dxt(:,2))]);
 
     %Boucle affichage de la section de poincaré
     for i=1:np1-1
@@ -251,7 +251,7 @@ if POINCARE
 
 
 
-                    %%%%%%Section poincare theta1%%%%%%%
+                    %%%%%%Section poincaré theta1=0%%%%%%%
     
                     
     figure(7)
@@ -265,29 +265,29 @@ if POINCARE
     xlabel('theta1')
     ylabel('d(theta1)/dt (rad/s)')
     title('Section de poincaré en theta1')
-    axis([min(xt(:,1))-0.2 max(xt(:,1))+0.2 min(dxt(:,1))-0.2 max(dxt(:,1))+0.2]);
+    axis([min(xt(:,2)) max(xt(:,2)) min(dxt(:,2)) max(dxt(:,2))]);
 
-                    %%%%%%Portait de phase theta1%%%%%%%
+                    %%%%%%Portait de phase theta2=0%%%%%%%
 
 
     figure(8) 
     set(figure(8),'position',[3*scz(3)/4-10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
-    plot(xt(:,2),dxt(:,2),'c-','Markersize',2)
-    xlabel('theta2')
-    ylabel('d(theta2)/dt (rad/s)')
+    plot(xt(:,1),dxt(:,1),'c-','Markersize',2)
+    xlabel('theta1')
+    ylabel('d(theta1)/dt (rad/s)')
     title('Portrait de phase en theta2')
-    axis([min(xt(:,2))-0.2 max(xt(:,2))+0.2 min(dxt(:,2))-0.2 max(dxt(:,2))+0.2]);
+    axis([min(xt(:,1)) max(xt(:,1)) min(dxt(:,1)) max(dxt(:,1))]);
     hold on     
 
-    %Boucle affichage de la section de poincare
+    %Boucle affichage de la section de poincaré
     for i=1:np2-1
         plot(ps2(i,1),ps2(i,2),'r+','markersize', 5)
-        % Possibilite de faire un affichage en temps reel
+        % Possibilité de faire un affichage en temps réel
         % pause(2);
     end
 
     
-                     %%%%%%Section poincare theta1%%%%%%%
+                     %%%%%%Section poincaré theta2=0%%%%%%%
 
 
     figure(9)
@@ -300,10 +300,10 @@ if POINCARE
     end 
     
     plot(x2(:,1),x2(:,2),'r+','markersize', 5)
-    xlabel('theta2')
-    ylabel('d(theta2)/dt (rad/s)')
-    title('Section de poincaré en theta2')
-    axis([min(xt(:,2))-0.2 max(xt(:,2))+0.2 min(dxt(:,2))-0.2 max(dxt(:,2))+0.2]);
+    xlabel('theta1')
+    ylabel('d(theta1)/dt (rad/s)')
+    title('Section de poincaré en theta2=0')
+    axis([min(xt(:,1)) max(xt(:,1)) min(dxt(:,1)) max(dxt(:,1))]);
 end 
 
 
@@ -320,7 +320,7 @@ end
 if Ener_ODE45
            %Energies cinetiques
            Ec1=0.5*m1*(l1^2)*(x(:,2).^2); %Energie cinetique pendule 1
-           Ec2=0.5*m2*((l1^2)*(x(:,2).^2)+(l2^2)*(x(:,4).^2)+(2*l1*l2).*(cos(x(:,1)-x(:,3)).*x(:,2).*x(:,4))); %Energie cinétique pendule 2
+           Ec2=0.5*m2*((l1^2)*(x(:,2).^2)+(l2^2)*(x(:,4).^2)+(2*l1*l2).*(cos(x(:,1)-x(:,3)).*x(:,2).*x(:,4))); %Energie cinÃ©tique pendule 2
 
            %Energies potentielles
            Ep1=(-m1*g*l1).*cos(x(:,1)); %Energie cinetique pendule 1
@@ -356,7 +356,7 @@ if Ener_Newmark
            %Energies cinetiques
 
            Ec1=0.5*m1*(l1^2)*(dxt(:,1).^2); %Energie cinetique pendule 1
-           Ec2=0.5*m2*((l1^2)*(dxt(:,1).^2)+(l2^2)*(dxt(:,2).^2)+(2*l1*l2).*(cos(xt(:,1)-xt(:,2)).*dxt(:,1).*dxt(:,2))); %Energie cinétique pendule 2
+           Ec2=0.5*m2*((l1^2)*(dxt(:,1).^2)+(l2^2)*(dxt(:,2).^2)+(2*l1*l2).*(cos(xt(:,1)-xt(:,2)).*dxt(:,1).*dxt(:,2))); %Energie cinÃ©tique pendule 2
 
            %Energies potentielles
 
@@ -393,7 +393,7 @@ end
 if grilleErr
 
     dtheta=0.5;                         % Pas d'angle           
-    Range=10;                           % Angles extremes à atteindre
+    Range=10;                           % Angles extremes Ã  atteindre
     
     t1d=-Range:dtheta:Range;
     t2d=-Range:dtheta:Range;
