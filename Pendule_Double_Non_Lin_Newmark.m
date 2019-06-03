@@ -95,7 +95,9 @@ if ERR_ODE_45
     theta_NL0=[theta10 , theta10p ,theta20, theta20p];
     options = odeset('AbsTol',1e-11,'RelTol',1e-11); 
     [tt,x]=ode45(@Pendule_Double_Non_Lin, t ,theta_NL0,options);
-
+    x(:,1)=mod(x(:,1)+pi,2*pi)-pi;
+    x(:,3)=mod(x(:,3)+pi,2*pi)-pi;
+    %Newmark-ODE45
     ERR_ODE_45=zeros(Niter+1,2);
     ERR_ODE_45(:,1)=abs(xt(:,1)-x(:,1));
     ERR_ODE_45(:,2)=abs(xt(:,2)-x(:,3));
@@ -106,6 +108,7 @@ if ERR_ODE_45
     hold on
     plot(tt,x(:,1),'r-')
     title('Theta 1 pour ODE 45 et Newmark')
+    legend('Newmark','ODE 45')
     hold off
 
     figure(3)
@@ -114,6 +117,7 @@ if ERR_ODE_45
     hold on
     plot(tt,x(:,3))
     title('Theta 2 pour ODE 45 et Newmark')
+    legend('Newmark','ODE 45')
     hold off
 
     figure(4)
