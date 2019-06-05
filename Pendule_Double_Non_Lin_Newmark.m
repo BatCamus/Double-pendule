@@ -319,9 +319,9 @@ end
 %% Diagramme bifurcation en fonction de theta20 
 
 if Bif
-    Amin=0*pi/180;  %angle initial minimum d'étude pour le diagramme
-    Amax=20*pi/180; %angle initial maximum d'étude pour le diagramme
-    pas=2*pi/180; %Pas
+    Amin=0*pi/180;  %angle initial minimum d'étude pour le diagramme en radian
+    Amax=20*pi/180; %angle initial maximum d'étude pour le diagramme en radian
+    pas=0.5*pi/180; %Pas en radian
     N=(Amax-Amin)/pas+1;
     u=1; 
         for m=Amin:pas:Amax
@@ -415,37 +415,37 @@ if Bif
 
 
     figure(16) 
-    axis([-N*pas/2 N*pas/2 -10 10])
+    axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
     % transposition
     ps11=ps11';
     
     for u=1:N
-        m=Amin+0.2*(u-1)
+        m=Amin+pas*(u-1);
         plot(m*180/pi,ps11(u,:),'b.', 'markersize',10)
         drawnow
         pause(0.5)
         hold on
-        axis([-N*pas/2 N*pas/2 -3.5 3.5])
+         axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
         
     end 
-    title('Diagramme de bifurcation') 
+    title('Diagramme de bifurcation theta1=0') 
     xlabel('Theta 1 initial (degrés)')
     ylabel('Theta 2 (radian)')
 
     figure(17) 
-    axis([-N*pas/2 N*pas/2 -3.5 3.5])
+     axis([Amin*180/(pi) Amax*180/(pi)  -0.2 0.2])
     % transposition
     ps12=ps12';
     
     for u=1:N
-        m=Amin+0.2*(u-1)
+        m=Amin+pas*(u-1);
         plot(m*180/pi,ps12(u,:),'b.', 'markersize',10)
         drawnow
         pause(0.5)
         hold on
-        axis([-N*pas/2 N*pas/2 -3.5 3.5])
+        axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
     end 
-    title('Diagramme de bifurcation') 
+    title('Diagramme de bifurcation theta2=0') 
     xlabel('Theta 2 initial (degrés)')
     ylabel('Theta 1 (radian)')
 
