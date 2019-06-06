@@ -333,11 +333,12 @@ end
 %% Diagramme bifurcation en fonction de theta20 
 
 if Bif
-    Amin=0;  %angle initial minimum d'étude pour le diagramme
-    Amax=6.4; %angle initial maximum d'étude pour le diagramme
-    N=Amax/0.2+1;
+    Amin=0*pi/180;  %angle initial minimum d'étude pour le diagramme en radian
+    Amax=20*pi/180; %angle initial maximum d'étude pour le diagramme en radian
+    pas=0.5*pi/180; %Pas en radian
+    N=(Amax-Amin)/pas+1;
     u=1; 
-        for m=0:0.2:Amax
+        for m=Amin:pas:Amax
 
             clear ps1 ps2 np1 np2 n1 i j xt dxt tt 
 
@@ -345,6 +346,8 @@ if Bif
             %Initialisation des angles initiaux à rentrer dans newmark
             X0=[m ; m];
             dX0=[0; 0];
+            
+            
 
             %Affectation des résultats obtenus avec newmark 
             [tt,xt,dxt]=newmark_Double_Pendule(X0,dX0,t0,dt,tf);
@@ -426,34 +429,37 @@ if Bif
 
 
     figure(16) 
-    axis([0 N*0.2*180/pi -10 10])
+    axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
     % transposition
     ps11=ps11';
     
     for u=1:N
-        plot(u*0.2*180/pi,ps11(u,:),'b.', 'markersize',10)
+        m=Amin+pas*(u-1);
+        plot(m*180/pi,ps11(u,:),'b.', 'markersize',10)
         drawnow
         pause(0.5)
         hold on
-        axis([0 N*0.2*180/pi -3.5 3.5])
+         axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
+        
     end 
-    title('Diagramme de bifurcation') 
+    title('Diagramme de bifurcation theta1=0') 
     xlabel('Theta 1 initial (degrés)')
     ylabel('Theta 2 (radian)')
 
     figure(17) 
-    axis([0 N*0.2 -10 10])
+     axis([Amin*180/(pi) Amax*180/(pi)  -0.2 0.2])
     % transposition
     ps12=ps12';
     
     for u=1:N
-        plot(u*0.2*180/pi,ps12(u,:),'b.', 'markersize',10)
+        m=Amin+pas*(u-1);
+        plot(m*180/pi,ps12(u,:),'b.', 'markersize',10)
         drawnow
         pause(0.5)
         hold on
-        axis([0 N*0.2*180/pi -3.5 3.5])
+        axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
     end 
-    title('Diagramme de bifurcation') 
+    title('Diagramme de bifurcation theta2=0') 
     xlabel('Theta 2 initial (degrés)')
     ylabel('Theta 1 (radian)')
 
