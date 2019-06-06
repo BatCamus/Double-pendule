@@ -30,8 +30,8 @@ C2 = (A1*theta10-theta20)/(A1-A2);
 phi1 = asin((theta20p-A2*theta10p)/(C1*w1*(A2-A1)));
 phi2 = asin((A1*theta10p-theta20p)/(C2*w2*(A2-A1)));
 
-Niter= 800; % Nombre d'itÃƒÂ©rations
-dt = 0.1; % Intervalle de temps
+Niter= 30000; % Nombre d'itÃƒÂ©rations
+dt = 0.01; % Intervalle de temps
 tf = Niter * dt; %Temps de modÃƒÂ©lisation 
 t0=0;
 t =t0:dt:tf ; %Matrice temps
@@ -41,13 +41,13 @@ M=eye(2); %Constante pour Newmark
 
 NUM=0; % Choix de jacobienne numÃ©rique ou analytique 0 pour analytique 1 pour numÃ©rique
 ERR_petit_angle=0; % Affichage erreur petit angle
-ERR_ODE_45=1; % Comparaison ODE 45
+ERR_ODE_45=0; % Comparaison ODE 45
 ANIM=0; %Animation
 POINCARE=0; %Graphe poincare
 Ener_Newmark=0; %Graphe Energie Newmark
 Ener_ODE45=0; %Graphe Energie ODE45
 grilleErr=0; %Graph grille erreur
-Bif=0; %diagramme de bifurcation
+Bif=1; %diagramme de bifurcation
 
 %% Solution analytique (VERIFICATION PETITS ANGLE)
 aTheta=zeros(Niter+1,2);
