@@ -429,7 +429,7 @@ if Bif
 
 
     figure(16) 
-    axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
+    axis([Amin*180/(pi) Amax*180/(pi) -3.2 3.2])
     % transposition
     ps11=ps11';
     
@@ -439,7 +439,7 @@ if Bif
         drawnow
         pause(0.5)
         hold on
-         axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
+         axis([Amin*180/(pi) Amax*180/(pi) -3.2 3.2])
         
     end 
     title('Diagramme de bifurcation theta1=0') 
@@ -447,7 +447,7 @@ if Bif
     ylabel('Theta 2 (radian)')
 
     figure(17) 
-     axis([Amin*180/(pi) Amax*180/(pi)  -0.2 0.2])
+     axis([Amin*180/(pi) Amax*180/(pi)  -3.2 3.2])
     % transposition
     ps12=ps12';
     
@@ -457,7 +457,7 @@ if Bif
         drawnow
         pause(0.5)
         hold on
-        axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
+        axis([Amin*180/(pi) Amax*180/(pi) -3.2 3.2])
     end 
     title('Diagramme de bifurcation theta2=0') 
     xlabel('Theta 2 initial (degrÃ©s)')
