@@ -1,4 +1,4 @@
-%% pendule double non linéaire methode Newmark
+%% pendule double non linÃ©aire methode Newmark
 
 clear all
 close all
@@ -6,7 +6,7 @@ global m1 m2 l1 l2 g mu
 global M NUM delta Niter
 
 %% Declaration variable
-g = 9.81;         % gravitÃ© terrestre
+g = 9.81;         % gravitÃƒÂ© terrestre
 m1 = 2;           % masse du pendule 1
 m2 = 3;           % masse du pendule 2
 l1 = 3;           % longueur du pendule 1                                                            
@@ -15,11 +15,11 @@ theta10 =30*pi/180;      % angle forme par le pendule 1 avec la verticale
 theta20 = 30*pi/180;        % angle forme par le pendule 2 avec la verticale
 theta10p= 0;         %vitesse angulaire initiale du pendule 1
 theta20p= 0;         % vitesse angulaire initiale du pendule 1
-theta10pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 1
-theta20pp = 0;     % accÃ©lÃ©ration angulaire initiale du pendule 2
-mu = m2/m1;       % rapport des masses : utile pour simplifier l'Ã©quation
+theta10pp = 0;     % accÃƒÂ©lÃƒÂ©ration angulaire initiale du pendule 1
+theta20pp = 0;     % accÃƒÂ©lÃƒÂ©ration angulaire initiale du pendule 2
+mu = m2/m1;       % rapport des masses : utile pour simplifier l'ÃƒÂ©quation
 
-scz=get(0,'screensize'); %Taille écran
+scz=get(0,'screensize'); %Taille Ã©cran
 
 w1 = sqrt((g*(1+mu)*(l1+l2)+g*sqrt((1+mu)^2*(l1+l2)^2-4*(1+mu)*l1*l2))/(2*l1*l2));
 w2 = sqrt((g*(1+mu)*(l1+l2)-g*sqrt((1+mu)^2*(l1+l2)^2-4*(1+mu)*l1*l2))/(2*l1*l2));
@@ -30,16 +30,16 @@ C2 = (A1*theta10-theta20)/(A1-A2);
 phi1 = asin((theta20p-A2*theta10p)/(C1*w1*(A2-A1)));
 phi2 = asin((A1*theta10p-theta20p)/(C2*w2*(A2-A1)));
 
-Niter= 800; % Nombre d'itÃ©rations
+Niter= 800; % Nombre d'itÃƒÂ©rations
 dt = 0.1; % Intervalle de temps
-tf = Niter * dt; %Temps de modÃ©lisation 
+tf = Niter * dt; %Temps de modÃƒÂ©lisation 
 t0=0;
 t =t0:dt:tf ; %Matrice temps
-delta=0.1; %Pas d'intégration de Fnl
+delta=0.1; %Pas d'intÃ©gration de Fnl
 
 M=eye(2); %Constante pour Newmark
 
-NUM=0; % Choix de jacobienne numérique ou analytique 0 pour analytique 1 pour numérique
+NUM=0; % Choix de jacobienne numÃ©rique ou analytique 0 pour analytique 1 pour numÃ©rique
 ERR_petit_angle=0; % Affichage erreur petit angle
 ERR_ODE_45=1; % Comparaison ODE 45
 ANIM=0; %Animation
@@ -62,7 +62,7 @@ aThetap(:,2)=-C1*A1*w1*sin(w1*t+phi1)-C2*A2*w2*sin(w2*t+phi2);
 % figure (30)
 % plot(aTheta(:,1),aThetap(:,1))
 
-%% solution par résolution numérique Newmark
+%% solution par rÃ©solution numÃ©rique Newmark
 X0=[theta10 ; theta20];
 dX0=[theta10p; theta20p];
 
@@ -113,7 +113,7 @@ if ERR_ODE_45
     title('Theta 1 pour ODE 45 et Newmark')
     legend('Newmark','ODE 45')
     xlabel('temps (s)')
-    ylabel('theta 1 (degr�)')
+    ylabel('theta 1 (degré)')
     hold off
 
     figure(3)
@@ -124,7 +124,7 @@ if ERR_ODE_45
     title('Theta 2 pour ODE 45 et Newmark')
     legend('Newmark','ODE 45')
     xlabel('temps (s)')
-    ylabel('theta 2 (degr�)')
+    ylabel('theta 2 (degré)')
     hold off
 
     figure(4)
@@ -133,13 +133,13 @@ if ERR_ODE_45
     plot(tt,ERR_ODE_45(:,1))
     title('Erreur ODE 45-Newmark theta 1')
     xlabel('temps (s)')
-    ylabel('Erreur (degr�)')
+    ylabel('Erreur (degré)')
 
     subplot(1,2,2)
     plot(tt,ERR_ODE_45(:,2))
     title('Erreur ODE 45-Newmark theta 2')
     xlabel('temps (s)')
-    ylabel('Erreur (degr�)')
+    ylabel('Erreur (degré)')
 
 end
 
@@ -198,7 +198,7 @@ if ANIM
         close(film)
 end 
 
-%% Section de poincaré
+%% Section de poincarÃ©
 
 if POINCARE
 
@@ -206,7 +206,7 @@ if POINCARE
     %set the index of poincare points to 1
     np1=1;
     np2=1; 
-    %Création matrices ps 
+    %CrÃ©ation matrices ps 
     ps1=zeros(n1(1),2);
     ps2=zeros(n1(1),2);
 
@@ -217,10 +217,10 @@ if POINCARE
 
 
     for i=2:n1(1)
-            %Trouver les points passant par un plan défini (ici theta1=0)
+            %Trouver les points passant par un plan dÃ©fini (ici theta1=0)
             if (xt(i,1)*xt(i-1,1)<0 && dxt(i,1)>0 &&  abs(xt(i,1))<2)
                 
-                %choix du point le plus proche entre celui à gauche et à droite du plan theta1=0
+                %choix du point le plus proche entre celui Ã  gauche et Ã  droite du plan theta1=0
                 if(abs(xt(i,1))<abs(xt(i-1,1)))
                     
                      % Sauvegarde des points d'intersection en theta2=0
@@ -231,13 +231,13 @@ if POINCARE
                     ps1(np1,1)=xt(i-1,2);
                     ps1(np1,2)=dxt(i-1,2);
                  end  
-                % Incrémentation 
+                % IncrÃ©mentation 
                 np1=np1+1;
             end
-            %Trouver les points passant par un plan défini (ici theta2=0)
+            %Trouver les points passant par un plan dÃ©fini (ici theta2=0)
             if (xt(i,2)*xt(i-1,2)<0 && dxt(i,2)>0 && abs(xt(i,2))<2) 
                 
-                 %choix du point le plus proche entre celui à gauche et à droite du plan theta2=0
+                 %choix du point le plus proche entre celui Ã  gauche et Ã  droite du plan theta2=0
                  if(abs(xt(i,2))<abs(xt(i-1,2)))
                      
                     % Sauvegarde des points d'intersection en theta2=0
@@ -248,7 +248,7 @@ if POINCARE
                     ps2(np2,1)=xt(i-1,1);
                     ps2(np2,2)=dxt(i-1,1);
                  end  
-                %  Incrémentation 
+                %  IncrÃ©mentation 
                 np2=np2+1;
             end
     end
@@ -259,22 +259,22 @@ if POINCARE
     figure(6) 
     set(figure(6),'position',[10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
     plot(xt(:,2),dxt(:,2),'c-','Markersize',2)
-    xlabel('theta2 (degrés)')
+    xlabel('theta2 (degrÃ©s)')
     ylabel('d(theta2)/dt (rad/s)') 
     title('Portrait de phase en theta1=0') 
     hold on 
     axis([min(xt(:,2))*180/pi max(xt(:,2))*180/pi min(dxt(:,2)) max(dxt(:,2))]);
 
-    %Boucle affichage de la section de poincaré
+    %Boucle affichage de la section de poincarÃ©
     for i=1:np1-1
         plot(ps1(i,1)*180/pi,ps1(i,2),'r+','markersize', 5)
-        % Possibilité de faire un affichage en temps réel
+        % PossibilitÃ© de faire un affichage en temps rÃ©el
         %pause(2);
     end
 
 
 
-                    %%%%%%Section poincaré theta1=0%%%%%%%
+                    %%%%%%Section poincarÃ© theta1=0%%%%%%%
     
                     
     figure(7)
@@ -285,9 +285,9 @@ if POINCARE
         x1(i,2)=ps1(i,2);
     end 
     plot(x1(:,1)*180/pi,x1(:,2),'r+','markersize', 5)
-    xlabel('theta1 (degrés)')
+    xlabel('theta1 (degrÃ©s)')
     ylabel('d(theta1)/dt (rad/s)')
-    title('Section de poincaré en theta1')
+    title('Section de poincarÃ© en theta1')
     axis([min(xt(:,2))*180/pi max(xt(:,2))*180/pi min(dxt(:,2)) max(dxt(:,2))]);
 
                     %%%%%%Portait de phase theta2=0%%%%%%%
@@ -296,21 +296,21 @@ if POINCARE
     figure(8) 
     set(figure(8),'position',[3*scz(3)/4-10 scz(4)/2-20 scz(3)/4 scz(4)/2.2-40]);
     plot(xt(:,1)*180/pi,dxt(:,1),'c-','Markersize',2)
-    xlabel('theta1 (degrés)')
+    xlabel('theta1 (degrÃ©s)')
     ylabel('d(theta1)/dt (rad/s)')
     title('Portrait de phase en theta2')
     axis([min(xt(:,1))*180/pi max(xt(:,1))*180/pi min(dxt(:,1)) max(dxt(:,1))]);
     hold on     
 
-    %Boucle affichage de la section de poincaré
+    %Boucle affichage de la section de poincarÃ©
     for i=1:np2-1
         plot(ps2(i,1)*180/pi,ps2(i,2),'r+','markersize', 5)
-        % Possibilité de faire un affichage en temps réel
+        % PossibilitÃ© de faire un affichage en temps rÃ©el
         % pause(2);
     end
 
     
-                     %%%%%%Section poincaré theta2=0%%%%%%%
+                     %%%%%%Section poincarÃ© theta2=0%%%%%%%
 
 
     figure(9)
@@ -323,9 +323,9 @@ if POINCARE
     end 
     
     plot(x2(:,1)*180/pi,x2(:,2),'r+','markersize', 5)
-    xlabel('theta1 (degrés)')
+    xlabel('theta1 (degrÃ©s)')
     ylabel('d(theta1)/dt (rad/s)')
-    title('Section de poincaré en theta2=0')
+    title('Section de poincarÃ© en theta2=0')
     axis([min(xt(:,1))*180/pi max(xt(:,1))*180/pi min(dxt(:,1)) max(dxt(:,1))]);
 end 
 
@@ -333,8 +333,8 @@ end
 %% Diagramme bifurcation en fonction de theta20 
 
 if Bif
-    Amin=0*pi/180;  %angle initial minimum d'étude pour le diagramme en radian
-    Amax=20*pi/180; %angle initial maximum d'étude pour le diagramme en radian
+    Amin=60*pi/180;  %angle initial minimum d'Ã©tude pour le diagramme en radian
+    Amax=80*pi/180; %angle initial maximum d'Ã©tude pour le diagramme en radian
     pas=0.5*pi/180; %Pas en radian
     N=(Amax-Amin)/pas+1;
     u=1; 
@@ -343,13 +343,13 @@ if Bif
             clear ps1 ps2 np1 np2 n1 i j xt dxt tt 
 
 
-            %Initialisation des angles initiaux à rentrer dans newmark
+            %Initialisation des angles initiaux Ã  rentrer dans newmark
             X0=[m ; m];
             dX0=[0; 0];
             
             
 
-            %Affectation des résultats obtenus avec newmark 
+            %Affectation des rÃ©sultats obtenus avec newmark 
             [tt,xt,dxt]=newmark_Double_Pendule(X0,dX0,t0,dt,tf);
 
             %transposition
@@ -359,7 +359,7 @@ if Bif
             tt=tt';
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            %%%%%%%%%%%%%%%%%%%% Poincaré %%%%%%%%%%%%%%%%%%%%
+            %%%%%%%%%%%%%%%%%%%% PoincarÃ© %%%%%%%%%%%%%%%%%%%%
 
 
             %Initialisation variables 
@@ -367,7 +367,7 @@ if Bif
                 %set the index of poincare points to 1
                 np1=1;
                 np2=1; 
-                %Création matrices ps 
+                %CrÃ©ation matrices ps 
                 ps1=zeros(n1(1),2);
                 ps2=zeros(n1(1),2);
 
@@ -377,10 +377,10 @@ if Bif
 
             for i=2:n1(1)
 
-                    %Trouver les points passant par un plan défini (ici theta1=0)
+                    %Trouver les points passant par un plan dÃ©fini (ici theta1=0)
                     if (xt(i,1)*xt(i-1,1)<0 && dxt(i,1)>0 &&  abs(xt(i,1))<2)
 
-                        %choix du point le plus proche entre celui à gauche et à droite du plan theta1=0
+                        %choix du point le plus proche entre celui Ã  gauche et Ã  droite du plan theta1=0
                         if(abs(xt(i,1))<abs(xt(i-1,1)))
 
                              % Sauvegarde des points d'intersection en theta1=0
@@ -391,15 +391,15 @@ if Bif
                             ps1(np1,1)=xt(i-1,2);
                             ps1(np1,2)=dxt(i-1,2);
                          end  
-                        % Incrémentation 
+                        % IncrÃ©mentation 
                         np1=np1+1;
 
                     end
 
-                    %Trouver les points passant par un plan défini (ici theta2=0)
+                    %Trouver les points passant par un plan dÃ©fini (ici theta2=0)
                     if (xt(i,2)*xt(i-1,2)<0 && dxt(i,2)>0 && abs(xt(i,2))<2) 
 
-                         %choix du point le plus proche entre celui à gauche et à droite du plan theta2=0
+                         %choix du point le plus proche entre celui Ã  gauche et Ã  droite du plan theta2=0
                          if(abs(xt(i,2))<abs(xt(i-1,2)))
 
                             % Sauvegarde des points d'intersection en theta2=0
@@ -410,7 +410,7 @@ if Bif
                             ps2(np2,1)=xt(i-1,1);
                             ps2(np2,2)=dxt(i-1,1);
                          end  
-                        %  Incrémentation 
+                        %  IncrÃ©mentation 
                         np2=np2+1;
                     end
             end
@@ -443,7 +443,7 @@ if Bif
         
     end 
     title('Diagramme de bifurcation theta1=0') 
-    xlabel('Theta 1 initial (degrés)')
+    xlabel('Theta 1 initial (degrÃ©s)')
     ylabel('Theta 2 (radian)')
 
     figure(17) 
@@ -460,7 +460,7 @@ if Bif
         axis([Amin*180/(pi) Amax*180/(pi) -0.2 0.2])
     end 
     title('Diagramme de bifurcation theta2=0') 
-    xlabel('Theta 2 initial (degrés)')
+    xlabel('Theta 2 initial (degrÃ©s)')
     ylabel('Theta 1 (radian)')
 
 
@@ -469,36 +469,36 @@ end
 
 %% Energies ODE 45
 if Ener_ODE45
-           %Energies cinétiques
+           %Energies cinÃ©tiques
 
-           Ec1=0.5*m1*(l1^2)*(x(:,2).^2); %Energie cinétique pendule 1
-           Ec2=0.5*m2*((l1^2)*(x(:,2).^2)+(l2^2)*(x(:,4).^2)+(2*l1*l2).*(cos(x(:,1)-x(:,3)).*x(:,2).*x(:,4))); %Energie cinétique pendule 2
+           Ec1=0.5*m1*(l1^2)*(x(:,2).^2); %Energie cinÃ©tique pendule 1
+           Ec2=0.5*m2*((l1^2)*(x(:,2).^2)+(l2^2)*(x(:,4).^2)+(2*l1*l2).*(cos(x(:,1)-x(:,3)).*x(:,2).*x(:,4))); %Energie cinÃ©tique pendule 2
 
            %Energies potentielles
 
-           Ep1=(-m1*g*l1).*cos(x(:,1)); %Energie cinétique pendule 1
-           Ep2=(-m2*g)*(l1.*cos(x(:,1))+l2.*cos(x(:,3))); %Energie cinétique pendule 2
+           Ep1=(-m1*g*l1).*cos(x(:,1)); %Energie cinÃ©tique pendule 1
+           Ep2=(-m2*g)*(l1.*cos(x(:,1))+l2.*cos(x(:,3))); %Energie cinÃ©tique pendule 2
 
     % Affichage graphique
-    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'énergie cinétique sur le pendule 1
-    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'énergie cinétique sur le pendule 2
-    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'énergie cinétique totale
+    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'Ã©nergie cinÃ©tique sur le pendule 1
+    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'Ã©nergie cinÃ©tique sur le pendule 2
+    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'Ã©nergie cinÃ©tique totale
 
-    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'énergie potentielle sur le pendule 1
-    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'énergie potentielle sur le pendule 2
+    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'Ã©nergie potentielle sur le pendule 1
+    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'Ã©nergie potentielle sur le pendule 2
     max34=max(max3,max4); %Max entre Ep1 et Ep2
-    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'énergie potentielle totale
+    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'Ã©nergie potentielle totale
 
     maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ; 
-        % détermination de la position initiale
+        % dÃ©termination de la position initiale
 
-        context_graph=1; % tracé de la position initial
+        context_graph=1; % tracÃ© de la position initial
         Graph_Pendule(context_graph,P1(1,1),P1(1,2),P2(1,1),P2(1,2),l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot);
 
         % actualisation position
         for j = 1:Npas
             t=dt*j;
-            context_graph=2; % reactualisation du tracé pour afficher la position courante
+            context_graph=2; % reactualisation du tracÃ© pour afficher la position courante
             Graph_Pendule(context_graph, P1(j,1),P1(j,2),P2(j,1),P2(j,2),l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot);
             drawnow;
         end
@@ -506,48 +506,48 @@ end
 
 %% Energies Newmark
 if Ener_Newmark
-           %Energies cinétiques
+           %Energies cinÃ©tiques
 
-           Ec1=0.5*m1*(l1^2)*(dxt(:,1).^2); %Energie cinétique pendule 1
-           Ec2=0.5*m2*((l1^2)*(dxt(:,1).^2)+(l2^2)*(dxt(:,2).^2)+(2*l1*l2).*(cos(xt(:,1)-xt(:,2)).*dxt(:,1).*dxt(:,2))); %Energie cinétique pendule 2
+           Ec1=0.5*m1*(l1^2)*(dxt(:,1).^2); %Energie cinÃ©tique pendule 1
+           Ec2=0.5*m2*((l1^2)*(dxt(:,1).^2)+(l2^2)*(dxt(:,2).^2)+(2*l1*l2).*(cos(xt(:,1)-xt(:,2)).*dxt(:,1).*dxt(:,2))); %Energie cinÃ©tique pendule 2
 
            %Energies potentielles
 
-           Ep1=(-m1*g*l1).*cos(xt(:,1)); %Energie cinétique pendule 1
-           Ep2=(-m2*g)*(l1.*cos(xt(:,1))+l2.*cos(xt(:,2))); %Energie cinétique pendule 2
+           Ep1=(-m1*g*l1).*cos(xt(:,1)); %Energie cinÃ©tique pendule 1
+           Ep2=(-m2*g)*(l1.*cos(xt(:,1))+l2.*cos(xt(:,2))); %Energie cinÃ©tique pendule 2
 
     % Affichage graphique
-    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'énergie cinétique sur le pendule 1
-    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'énergie cinétique sur le pendule 2
-    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'énergie cinétique totale
+    max1=max(Ec1); min1=min(Ec1);  %Max et min de l'Ã©nergie cinÃ©tique sur le pendule 1
+    max2=max(Ec2); min2=min(Ec2);  %Max et min de l'Ã©nergie cinÃ©tique sur le pendule 2
+    maxt=max(Ec1+Ec2); mint=min(Ec1+Ec2); %Max et min de l'Ã©nergie cinÃ©tique totale
 
-    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'énergie potentielle sur le pendule 1
-    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'énergie potentielle sur le pendule 2
+    max3=max(Ep1); min3=min(Ep1);  %Max et min de l'Ã©nergie potentielle sur le pendule 1
+    max4=max(Ep2); min4=min(Ep2);  %Max et min de l'Ã©nergie potentielle sur le pendule 2
     max34=max(max3,max4); %Max entre Ep1 et Ep2
-    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'énergie potentielle totale
+    maxp=max(Ep1+Ep2); minp=min(Ep1+Ep2); %Max et min de l'Ã©nergie potentielle totale
 
     maxtot=max(Ep1+Ep2+Ec1+Ec2) ; mintot=min(Ep1+Ep2+Ec1+Ec2) ; 
     
-        % détermination de la position initiale
+        % dÃ©termination de la position initiale
 
-        context_graph=1; % tracé de la position initial
+        context_graph=1; % tracÃ© de la position initial
         Graph_pendule(context_graph,P1,P2,l1,l2,0,tf,Ec1(1),Ec2(1),Ep1(1),Ep2(1),maxt,mint,max34,minp,maxtot,mintot,1);
 
         %%actualisation position
 
         for j = 2:Niter
             t=dt*j;
-            context_graph=2; % reactualisation du tracé pour afficher la position courante
+            context_graph=2; % reactualisation du tracÃ© pour afficher la position courante
             Graph_pendule(context_graph, P1,P2,l1,l2,t,tf,Ec1(j),Ec2(j),Ep1(j),Ep2(j),maxt,mint,max34,minp,maxtot,mintot,j);
             drawnow;
         end
 end
 
-%% Grille erreur relative : Schéma Newmark / analytique
+%% Grille erreur relative : SchÃ©ma Newmark / analytique
 if grilleErr
 
     dtheta=0.5;                         % Pas d'angle           
-    Range=10;                           % Angles extremes à atteindre
+    Range=10;                           % Angles extremes Ã  atteindre
     
     t1d=-Range:dtheta:Range;
     t2d=-Range:dtheta:Range;
