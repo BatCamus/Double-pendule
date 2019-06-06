@@ -615,3 +615,91 @@ if grilleErr
             drawnow
     end
 end
+%% Grille energie potentielle.
+if GrilleEner
+
+    dtheta=0.5;                         % Pas d'angle           
+    Range=180;                           % Angles extremes à atteindre
+    
+    t1d=-Range:dtheta:Range;
+    t2d=-Range:dtheta:0;
+    t1=t1d*pi/180;
+    t2=t2d*pi/180;
+
+    W1=zeros(length(t1),length(t1));
+    W2=zeros(length(t1),length(t2));
+
+    for j=1:length(t1)                  % Boucle sur Theta1
+        for i=1:length(t2)              % Boucle sur Theta2
+           X0=[t1(1,j); t2(1,i)]; 
+           y1=-l1*cos(X0(1,1));
+           y2=y1-l2*cos(X0(2,1));
+           Ep1=(-m1*g*l1).*cos(X0(1,1)); %Energie cinétique pendule 1
+           Ep2=(-m2*g)*(l1.*cos(X0(1,1))+l2.*cos(X0(2,1))); %Energie cinétique pendule 
+           if(y2>0)
+            W1(i,j)=Ep1+Ep2;
+            W1(length(t1)-i+1,length(t1)-j+1)=Ep1+Ep2;
+           else
+               W1(i,j)=NaN;
+               W1(length(t1)-i+1,length(t1)-j+1)=NaN;
+           end
+
+        end
+           %             caxis([0 5])
+           figure(25)
+            h=pcolor(t1d,t1d,W1)
+            set(h, 'EdgeColor', 'none');
+            h.FaceColor='interp';
+            caxis([min(min(W1)) max(max(W1))]);
+            xlabel('Theta1 en degres');
+            ylabel('Theta2 en degres');
+            title('Energie potentielle en J');
+            colorbar('EastOutside')
+            drawnow
+    end
+    EPmin=min(min(W1));
+end
+
+if grille
+
+    dtheta=1;
+    Range=180;
+    
+    t1d=-Range:dtheta:Range;
+    t2d=-Range:dtheta:0;
+    t1=t1d*pi/180;
+    t2=t2d*pi/180;
+
+    W1=zeros(length(t1),length(t2));
+    for j=1:length(t1)
+        for i=1:length(t2)
+            %ode45
+            theta_NL0=[t1(j) , 0 ,t2(i),0];
+            X0=[t1(j) ;t2(i)];
+            dX0=[0; 0];
+            Ep1=(-m1*g*l1)*cos(X0(1,1)); %Energie potentielle pendule 1
+            Ep2=(-m2*g)*(l1.*cos(X0(1,1))+l2*cos(X0(2,1))); %Energie potentielle pendule 2
+            %Test energie potentielle
+            EnerP=Ep1+Ep2;
+            
+            if EnerP > EPmin
+           
+            [tt,Xt,dXt,Tr]=Temps_de_retournement_N(X0,dX0,t_init,dt)
+            W1(i,j)=t;
+            W1(length(t1)-i+1,length(t1)-j+1)=t;
+            else
+            W1(i,j)=NaN;
+            W1(length(t1)-i+1,length(t1)-j+1)=NaN; 
+            end
+        end
+            figure(25)
+            h=pcolor(t1d,t2d,log(W1));
+            set(h, 'EdgeColor', 'none');
+            caxis('auto')
+            xlabel('Theta1 initial en degres');
+            ylabel('Theta2 initial en degres');
+            title('Temps de retournement');
+            colorbar('EastOutside')
+            drawnow
+           
+    end
