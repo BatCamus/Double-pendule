@@ -46,6 +46,7 @@ ANIM=0; %Animation
 POINCARE=0; %Graphe poincare
 Ener_Newmark=0; %Graphe Energie Newmark
 Ener_ODE45=0; %Graphe Energie ODE45
+GrilleEner=0; %Grille des énergies potentielles initiales
 grilleErr=0; %Graph grille erreur
 Bif=1; %diagramme de bifurcation
 
@@ -700,6 +701,6 @@ if grille
             ylabel('Theta2 initial en degres');
             title('Temps de retournement');
             colorbar('EastOutside')
-            drawnow
-           
+            drawnow 
     end
+end
