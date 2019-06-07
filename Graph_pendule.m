@@ -5,12 +5,12 @@ global pendule_masse1 pendule_tige1 pendule_masse2 pendule_tige2 Energie_cin1 En
 
 Ect=Ec1+Ec2;
 Ept=Ep1+Ep2;
-scz=get(0,'screensize'); %Taille écran
+scz=get(0,'screensize'); %Taille ecran
     
 %%
-        figure(1);
+        figure(12);
 
-        set(figure(1),'position',[20+scz(3)/3 220+4*scz(4)/12 scz(3)/3 scz(4)/3]);
+        set(figure(12),'position',[20+scz(3)/3 220+4*scz(4)/12 scz(3)/3 scz(4)/3]);
         
       
         xlabel('X(dm)')
@@ -33,7 +33,7 @@ scz=get(0,'screensize'); %Taille écran
     
             axis([-6 6 -6 6]);
 
-          elseif contexte==2 %position actualisée
+          elseif contexte==2 %position actualise
 
             set(pendule_masse1,'XData',P1(j,1),'YData',-P1(j,2));
             set(pendule_tige1,'XData',[0,P1(j,1)],'YData',[0,-P1(j,2)]);
@@ -53,13 +53,13 @@ scz=get(0,'screensize'); %Taille écran
 %%
     
 
-     figure(2);
-     set(figure(2),'position',[20 80 scz(3)/4 scz(4)/3]);
+     figure(13);
+     set(figure(13),'position',[20 80 scz(3)/4 scz(4)/3]);
      
      xlabel('t(s)')
      ylabel('Energie(J)')
      title('Evolution des énergies cinétiques en fonction du temps');
-     %legend('Energie cinétique pendule 1','Energie cinétique pendule 2','Energie cinétique système');
+     %legend('Energie cinetique pendule 1','Energie cinetique pendule 2','Energie cinetique systeme');
         
           if contexte==1 %position initiale
             Energie_cin1=plot(t,Ec1,'k.','Markersize',10,'Color','black');
@@ -86,14 +86,14 @@ scz=get(0,'screensize'); %Taille écran
           
 %%
           
-     figure(3);
-     set(figure(3),'position',[20 220+4*scz(4)/12 scz(3)/4 scz(4)/3]);
+     figure(14);
+     set(figure(14),'position',[20 220+4*scz(4)/12 scz(3)/4 scz(4)/3]);
      
      
      xlabel('t(s)')
      ylabel('Energie(J)')
-     title('Evolution des énergies potentielles en fonction du temps');
-  legend('Energie potentielle pendule 1','Energie potentielle pendule 2','Energie potentielle système');
+     title('Evolution des energies potentielles en fonction du temps');
+     %legend('Energie potentielle pendule 1','Energie potentielle pendule 2','Energie potentielle systeme');
      
           if contexte==1 %position initiale
             Energie_pot1=plot(t,Ep1,'k.','Markersize',10,'Color','black');
@@ -104,7 +104,7 @@ scz=get(0,'screensize'); %Taille écran
             hold on;
             axis([0 tf minp max34]);
 
-          elseif contexte==2 %actualisé
+          elseif contexte==2 %actualise
 
             set(Energie_pot1,'XData',t,'YData',Ep1);
             set(Energie_pot2,'XData',t,'YData',Ep2);
@@ -118,12 +118,12 @@ scz=get(0,'screensize'); %Taille écran
      
 %%
      
-     figure(4);
-     set(figure(4),'position',[3*scz(3)/4-10 220+4*scz(4)/12 scz(3)/4 scz(4)/3]);
+     figure(15);
+     set(figure(15),'position',[3*scz(3)/4-10 220+4*scz(4)/12 scz(3)/4 scz(4)/3]);
      Et=Ept+Ect;
      xlabel('t(s)')
      ylabel('Energie(J)')
-     title('Evolution de l énergie mécanique en fonction du temps');
+     title('Evolution de l energie mecanique en fonction du temps');
      
      
       
@@ -133,7 +133,7 @@ scz=get(0,'screensize'); %Taille écran
                 hold on;
                 axis([0 tf mintot-1 maxtot+1]);
                 
-         elseif contexte==2 %actualisé
+         elseif contexte==2 %actualise
 
                 set(Energie_t,'XData',t,'YData',Et);
                 plot(t,Et,'k.','Markersize',3,'Color','red'); 
